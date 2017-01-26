@@ -10,7 +10,7 @@ namespace ClinicModel
     /// </summary>
     public class Customer
     {
-        public string FrontName { get; set; }
+        public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
@@ -27,5 +27,13 @@ namespace ClinicModel
         public string AdditionalDetails { get; set; }
 
         public DateTime BirthDate { get; set; }
+
+        public Gender Gender { get; set; }
+    }
+
+    public enum Gender
+    {
+        Female,
+        Male
     }
 }

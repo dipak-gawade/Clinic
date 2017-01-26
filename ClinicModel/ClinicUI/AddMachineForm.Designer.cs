@@ -32,9 +32,9 @@
             this.txtSerialNumber = new System.Windows.Forms.TextBox();
             this.lblShortName = new System.Windows.Forms.Label();
             this.txtShortName = new System.Windows.Forms.TextBox();
-            this.txtPricePerSession = new System.Windows.Forms.TextBox();
-            this.lblTimePerSession = new System.Windows.Forms.Label();
             this.txtTimePerSession = new System.Windows.Forms.TextBox();
+            this.lblTimePerSession = new System.Windows.Forms.Label();
+            this.txtPricePerSession = new System.Windows.Forms.TextBox();
             this.lblPricePerSession = new System.Windows.Forms.Label();
             this.txtPurpose = new System.Windows.Forms.TextBox();
             this.lblPurpose = new System.Windows.Forms.Label();
@@ -273,9 +273,9 @@
             // 
             // grpBasicDetails
             // 
-            this.grpBasicDetails.Controls.Add(this.txtShortName);
-            this.grpBasicDetails.Controls.Add(this.lblSerialNumber);
             this.grpBasicDetails.Controls.Add(this.txtSerialNumber);
+            this.grpBasicDetails.Controls.Add(this.lblSerialNumber);
+            this.grpBasicDetails.Controls.Add(this.txtShortName);
             this.grpBasicDetails.Controls.Add(this.lblShortName);
             this.grpBasicDetails.Controls.Add(this.lblName);
             this.grpBasicDetails.Controls.Add(this.txtName);
@@ -290,9 +290,9 @@
             // 
             // grpSessionDetails
             // 
-            this.grpSessionDetails.Controls.Add(this.lblTimePerSession);
-            this.grpSessionDetails.Controls.Add(this.txtPricePerSession);
             this.grpSessionDetails.Controls.Add(this.lblPricePerSession);
+            this.grpSessionDetails.Controls.Add(this.txtPricePerSession);
+            this.grpSessionDetails.Controls.Add(this.lblTimePerSession);
             this.grpSessionDetails.Controls.Add(this.txtTimePerSession);
             this.grpSessionDetails.Location = new System.Drawing.Point(12, 221);
             this.grpSessionDetails.Name = "grpSessionDetails";

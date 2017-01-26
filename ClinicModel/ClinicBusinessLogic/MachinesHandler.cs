@@ -77,6 +77,8 @@ namespace ClinicBusinessLogic
             RaiseMachinesUpdatedEvent();
         }
 
+        #endregion
+
         #region Private methods
 
         private void RaiseMachinesUpdatedEvent()
