@@ -10,6 +10,10 @@ namespace ClinicModel
     /// </summary>
     public class Customer
     {
+        public int m_Id = 0;
+
+        public int Id { get { return m_Id; } }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -29,6 +33,11 @@ namespace ClinicModel
         public DateTime BirthDate { get; set; }
 
         public Gender Gender { get; set; }
+
+        public Customer(int id)
+        {
+            m_Id = id;
+        }
     }
 
     public enum Gender

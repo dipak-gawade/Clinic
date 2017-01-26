@@ -36,7 +36,7 @@ namespace ClinicBusinessLogic
         public bool AddOrEditMachine(string serialNumber, string shortName,
             string name, string make, string purpose, string comments,
             int price, DateTime purchaseDate, string imagePath, bool isActive,
-            int perSessionPrice, int timePerSession, out string errorOrigin, out string errorMessage)
+            out string errorOrigin, out string errorMessage)
         {
             errorMessage = null;
             errorOrigin = null;
@@ -58,8 +58,6 @@ namespace ClinicBusinessLogic
             newMachine.PurchaseDate = purchaseDate;
             newMachine.ImagePath = imagePath;
             newMachine.IsActive = isActive;
-            newMachine.PerSessionPrice = perSessionPrice;
-            newMachine.TimePerSessionInMinutes = timePerSession;
 
             RaiseMachinesUpdatedEvent();
 
@@ -68,13 +66,18 @@ namespace ClinicBusinessLogic
 
         public List<string> GetMachineNames()
         {
-            return m_Machines.Select(s => s.Name) as List<string>;
+            return m_Machines.Select(s => s.Name).ToList();
         }
 
         public void RemoveMachine()
         {
             m_Machines.Remove(m_SelectedMachine);
             RaiseMachinesUpdatedEvent();
+        }
+
+        public Machine GetMachineByName(string name)
+        {
+            return m_Machines.Find(x => x.Name == name);
         }
 
         #endregion

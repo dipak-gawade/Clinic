@@ -33,17 +33,16 @@ namespace ClinicBusinessLogic
             m_SelectedCustomer = customerSelected;
         }
 
-        public bool AddOrEditCustomer(string mobileNumber, string firstName,
+        public bool AddOrEditCustomer(int id, string mobileNumber, string firstName,
             string lastName, string referredBy, string reasonToVisit, string emailAddress,
             DateTime birthDate, string address, string additionalDetails, Gender gender, out string errorOrigin, out string errorMessage)
         {
             errorMessage = null;
             errorOrigin = null;
 
-            Customer newCustomer = GetCustomerByUniqueNameAndNumber(mobileNumber, firstName, lastName);
-            if (newCustomer == null)
+            Customer newCustomer = (id == -1) ? new Customer(GetIdForNewCustomer()) : m_SelectedCustomer;
+            if (id == -1)
             {
-                newCustomer = new Customer();
                 m_Customers.Add(newCustomer);
             }
 
@@ -102,6 +101,17 @@ namespace ClinicBusinessLogic
             Customer existingMachine = m_Customers.Find(x => (x.MobileNumber == mobileNumber)
                 && (x.FirstName == firstName) && (x.LastName == lastName));
             return existingMachine;
+        }
+
+        private int GetIdForNewCustomer()
+        {
+            int id = 1; 
+            if (m_Customers.Count > 0)
+            {
+                id = m_Customers[m_Customers.Count - 1].Id + 1;
+            }
+
+            return id;
         }
 
         #endregion

@@ -44,18 +44,24 @@
             this.tabPageMachines = new System.Windows.Forms.TabPage();
             this.btnAddMachine = new System.Windows.Forms.Button();
             this.dataGridViewMachines = new System.Windows.Forms.DataGridView();
+            this.tabProcedures = new System.Windows.Forms.TabPage();
+            this.dataGridViewProcedures = new System.Windows.Forms.DataGridView();
+            this.btnAddProcedure = new System.Windows.Forms.Button();
             this.tabControlWHole.SuspendLayout();
             this.tabCustomers.SuspendLayout();
             this.gbSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCustomers)).BeginInit();
             this.tabPageMachines.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMachines)).BeginInit();
+            this.tabProcedures.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProcedures)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControlWHole
             // 
             this.tabControlWHole.Controls.Add(this.tabCustomers);
             this.tabControlWHole.Controls.Add(this.tabPageMachines);
+            this.tabControlWHole.Controls.Add(this.tabProcedures);
             this.tabControlWHole.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlWHole.Location = new System.Drawing.Point(0, 0);
             this.tabControlWHole.Name = "tabControlWHole";
@@ -221,6 +227,35 @@
             this.dataGridViewMachines.Size = new System.Drawing.Size(675, 303);
             this.dataGridViewMachines.TabIndex = 0;
             // 
+            // tabProcedures
+            // 
+            this.tabProcedures.Controls.Add(this.btnAddProcedure);
+            this.tabProcedures.Controls.Add(this.dataGridViewProcedures);
+            this.tabProcedures.Location = new System.Drawing.Point(4, 22);
+            this.tabProcedures.Name = "tabProcedures";
+            this.tabProcedures.Size = new System.Drawing.Size(691, 366);
+            this.tabProcedures.TabIndex = 2;
+            this.tabProcedures.Text = "Procedures";
+            this.tabProcedures.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewProcedures
+            // 
+            this.dataGridViewProcedures.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewProcedures.Location = new System.Drawing.Point(8, 8);
+            this.dataGridViewProcedures.Name = "dataGridViewProcedures";
+            this.dataGridViewProcedures.Size = new System.Drawing.Size(675, 303);
+            this.dataGridViewProcedures.TabIndex = 1;
+            // 
+            // btnAddProcedure
+            // 
+            this.btnAddProcedure.Location = new System.Drawing.Point(246, 322);
+            this.btnAddProcedure.Name = "btnAddProcedure";
+            this.btnAddProcedure.Size = new System.Drawing.Size(198, 32);
+            this.btnAddProcedure.TabIndex = 2;
+            this.btnAddProcedure.Text = "Add Procedure";
+            this.btnAddProcedure.UseVisualStyleBackColor = true;
+            this.btnAddProcedure.Click += new System.EventHandler(this.btnAddProcedure_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -236,6 +271,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCustomers)).EndInit();
             this.tabPageMachines.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMachines)).EndInit();
+            this.tabProcedures.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProcedures)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -258,6 +295,9 @@
         private System.Windows.Forms.RadioButton rbFirstName;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.RadioButton rbListAll;
+        private System.Windows.Forms.TabPage tabProcedures;
+        private System.Windows.Forms.Button btnAddProcedure;
+        private System.Windows.Forms.DataGridView dataGridViewProcedures;
     }
 }
 

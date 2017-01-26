@@ -40,16 +40,13 @@ namespace ClinicUI
                 dateTimePickerPurchaseDate.Value = m_MachinesHandler.SelectedMachine.PurchaseDate;
                 txtImagePath.Text = m_MachinesHandler.SelectedMachine.ImagePath;
                 cbActive.Checked = m_MachinesHandler.SelectedMachine.IsActive;
-                txtPricePerSession.Text = m_MachinesHandler.SelectedMachine.PerSessionPrice.ToString();
-                txtTimePerSession.Text = m_MachinesHandler.SelectedMachine.TimePerSessionInMinutes.ToString();
             }
 
             if (m_Operation == Operation.Show)
             {
                 btnSave.Visible = false;
                 txtSerialNumber.ReadOnly = txtShortName.ReadOnly = txtName.ReadOnly = txtMake.ReadOnly =
-                    txtPurpose.ReadOnly = txtAdditionalDetails.ReadOnly = txtPrice.ReadOnly = txtImagePath.ReadOnly =
-                    txtPricePerSession.ReadOnly = txtTimePerSession.ReadOnly = true;
+                    txtPurpose.ReadOnly = txtAdditionalDetails.ReadOnly = txtPrice.ReadOnly = txtImagePath.ReadOnly = true;
 
                 dateTimePickerPurchaseDate.Enabled = false;
                 cbActive.Enabled = false;
@@ -74,8 +71,6 @@ namespace ClinicUI
                 Convert.ToDateTime(dateTimePickerPurchaseDate.Value),
                 txtImagePath.Text,
                 cbActive.Checked,
-                Convert.ToInt32(txtPricePerSession.Text),
-                Convert.ToInt32(txtTimePerSession.Text),
                 out errorOrigin,
                 out errorMessage);
 

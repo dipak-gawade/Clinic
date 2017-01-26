@@ -15,6 +15,7 @@ namespace ClinicUI
     {
         private MachinesHandler m_MachinesHandler;
         private CustomersHandler m_CustomersHandler;
+        private ProceduresHandler m_ProcedureHandler;
 
         public MainForm()
         {
@@ -23,18 +24,85 @@ namespace ClinicUI
 
             m_CustomersHandler = new CustomersHandler();
 
+            m_ProcedureHandler = new ProceduresHandler(m_MachinesHandler);
+
             InitializeGrid();
 
             SetMachinesGridDisplayColumns();
             SetCustomersGridDisplayColumns();
+            SetProceduresGridDisplayColumns();
 
             UpdateMachineDataSource();
             UpdateCustomerDataSource();
+            UpdateProcedureDataSource();
+
+            dataGridViewProcedures.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridViewProcedures_CellFormatting);
         }
 
-        
-
         #region Private methods
+
+        private System.Windows.Forms.ContextMenu GetContextMenuForMachinesGrid()
+        {
+            ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+            MenuItem editToolStrip = new MenuItem();
+            editToolStrip.Text = "Edit machine details";
+            editToolStrip.Click += new EventHandler(editToolStripForMachine_Click);
+            contextMenu.MenuItems.Add(editToolStrip);
+
+            MenuItem showToolStrip = new MenuItem();
+            showToolStrip.Text = "Show all details";
+            showToolStrip.Click += new EventHandler(showToolStripForMachine_Click);
+            contextMenu.MenuItems.Add(showToolStrip);
+
+            MenuItem deleteToolStrip = new MenuItem();
+            deleteToolStrip.Text = "Remove machine";
+            deleteToolStrip.Click += new EventHandler(deleteToolStripForMachine_Click);
+            contextMenu.MenuItems.Add(deleteToolStrip);
+
+            return contextMenu;
+        }
+
+        private System.Windows.Forms.ContextMenu GetContextMenuForCustomersGrid()
+        {
+            ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+            MenuItem editToolStrip = new MenuItem();
+            editToolStrip.Text = "Edit customer details";
+            editToolStrip.Click += new EventHandler(editToolStripForCustomer_Click);
+            contextMenu.MenuItems.Add(editToolStrip);
+
+            MenuItem showToolStrip = new MenuItem();
+            showToolStrip.Text = "Show all details";
+            showToolStrip.Click += new EventHandler(showToolStripForCustomer_Click);
+            contextMenu.MenuItems.Add(showToolStrip);
+
+            MenuItem deleteToolStrip = new MenuItem();
+            deleteToolStrip.Text = "Remove customer";
+            deleteToolStrip.Click += new EventHandler(deleteToolStripForCustomer_Click);
+            contextMenu.MenuItems.Add(deleteToolStrip);
+
+            return contextMenu;
+        }
+
+        private System.Windows.Forms.ContextMenu GetContextMenuFoProcedureGrid()
+        {
+            ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+            MenuItem editToolStrip = new MenuItem();
+            editToolStrip.Text = "Edit procedure details";
+            editToolStrip.Click += new EventHandler(editToolStripForProcedure_Click);
+            contextMenu.MenuItems.Add(editToolStrip);
+
+            MenuItem showToolStrip = new MenuItem();
+            showToolStrip.Text = "Show all details";
+            showToolStrip.Click += new EventHandler(showToolStripForProcedure_Click);
+            contextMenu.MenuItems.Add(showToolStrip);
+
+            MenuItem deleteToolStrip = new MenuItem();
+            deleteToolStrip.Text = "Remove procedure";
+            deleteToolStrip.Click += new EventHandler(deleteToolStripForProcedure_Click);
+            contextMenu.MenuItems.Add(deleteToolStrip);
+
+            return contextMenu;
+        }
 
         private void InitializeGrid()
         {
@@ -61,9 +129,20 @@ namespace ClinicUI
             dataGridViewCustomers.SelectionChanged += new EventHandler(dataGridViewCustomers_SelectionChanged);
             m_CustomersHandler.CustomersUpdated += new EventHandler(m_CustomersHandler_CustomersUpdated);
             dataGridViewCustomers.CellMouseDown += new DataGridViewCellMouseEventHandler(dataGridViewCustomers_CellMouseDown);
-        }
 
-        
+            // Procedure grid
+            dataGridViewProcedures.AutoGenerateColumns = false;
+            dataGridViewProcedures.AllowUserToAddRows = false;
+            dataGridViewProcedures.AllowUserToDeleteRows = false;
+            dataGridViewProcedures.AllowUserToOrderColumns = false;
+            dataGridViewProcedures.MultiSelect = false;
+            dataGridViewProcedures.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            dataGridViewProcedures.SelectionChanged += new EventHandler(dataGridViewProcedures_SelectionChanged);
+            dataGridViewProcedures.CellMouseDown += new DataGridViewCellMouseEventHandler(dataGridViewProcedures_CellMouseDown);
+            m_ProcedureHandler.ProceduresUpdated += new EventHandler(m_ProcedureHandler_ProceduresUpdated);
+
+        }
 
         private void SetMachinesGridDisplayColumns()
         {
@@ -133,6 +212,32 @@ namespace ClinicUI
             dataGridViewCustomers.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
+        private void SetProceduresGridDisplayColumns()
+        {
+            dataGridViewProcedures.ColumnCount = 4;
+
+            dataGridViewProcedures.Columns[0].Name = "Name";
+            dataGridViewProcedures.Columns[0].HeaderText = "Name";
+            dataGridViewProcedures.Columns[0].DataPropertyName = "Name";
+            dataGridViewProcedures.Columns[0].ReadOnly = true;
+            dataGridViewProcedures.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dataGridViewProcedures.Columns[1].Name = "MachineName";
+            dataGridViewProcedures.Columns[1].HeaderText = "Machine";
+            dataGridViewProcedures.Columns[1].DataPropertyName = "Machine";
+            dataGridViewProcedures.Columns[1].ReadOnly = true;
+
+            dataGridViewProcedures.Columns[2].Name = "PricePerSession";
+            dataGridViewProcedures.Columns[2].HeaderText = "Price per session";
+            dataGridViewProcedures.Columns[2].DataPropertyName = "PricePerSession";
+            dataGridViewProcedures.Columns[2].ReadOnly = true;
+
+            dataGridViewProcedures.Columns[3].Name = "TimePerSession";
+            dataGridViewProcedures.Columns[3].HeaderText = "Time per session";
+            dataGridViewProcedures.Columns[3].DataPropertyName = "TimePerSession";
+            dataGridViewProcedures.Columns[3].ReadOnly = true;
+        }
+
         private void UpdateMachineDataSource()
         {
             BindingSource bs = new BindingSource();
@@ -149,6 +254,14 @@ namespace ClinicUI
             dataGridViewCustomers.Refresh();
         }
 
+        private void UpdateProcedureDataSource()
+        {
+            BindingSource bs = new BindingSource();
+            bs.DataSource = m_ProcedureHandler.Procedures;
+            dataGridViewProcedures.DataSource = bs;
+            dataGridViewProcedures.Refresh();
+        }
+
         private void BindToSelectedCustomer()
         {
             BindingSource bs = new BindingSource();
@@ -160,6 +273,8 @@ namespace ClinicUI
         #endregion
 
         #region Event Handlers
+
+        #region Machines Grid
 
         private void dataGridViewMachines_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -174,7 +289,53 @@ namespace ClinicUI
             }
         }
 
-        void dataGridViewCustomers_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        private void deleteToolStripForMachine_Click(object sender, EventArgs e)
+        {
+            DialogResult dlgResult = MessageBox.Show("Do you want to remove the selected machine?", "Remove machine",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            if (dlgResult == System.Windows.Forms.DialogResult.OK)
+            {
+                dataGridViewMachines.ClearSelection();
+                m_MachinesHandler.RemoveMachine();
+            }
+        }
+
+        private void showToolStripForMachine_Click(object sender, EventArgs e)
+        {
+            AddMachineForm addForm = new AddMachineForm(m_MachinesHandler, Operation.Show);
+            addForm.ShowDialog();
+        }
+
+        private void editToolStripForMachine_Click(object sender, EventArgs e)
+        {
+            AddMachineForm addForm = new AddMachineForm(m_MachinesHandler, Operation.Edit);
+            addForm.ShowDialog();
+        }
+
+        private void m_MachinesHandler_MachinesUpdated(object sender, EventArgs e)
+        {
+            UpdateMachineDataSource();
+        }
+
+        private void btnAddMachine_Click(object sender, EventArgs e)
+        {
+            AddMachineForm addForm = new AddMachineForm(m_MachinesHandler, Operation.Add);
+            addForm.ShowDialog();
+        }
+
+        private void dataGridViewMachines_SelectionChanged(object sender, EventArgs e)
+        {
+            if ((sender as DataGridView).SelectedRows.Count > 0)
+            {
+                m_MachinesHandler.SelectMachine((sender as DataGridView).SelectedRows[0].DataBoundItem as Machine);
+            }
+        }
+
+        #endregion
+
+        #region Customers Grid
+
+        private void dataGridViewCustomers_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
@@ -187,73 +348,14 @@ namespace ClinicUI
             }
         }
 
-        private System.Windows.Forms.ContextMenu GetContextMenuForMachinesGrid()
-        {
-            ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
-            MenuItem editToolStrip = new MenuItem();
-            editToolStrip.Text = "Edit machine details";
-            editToolStrip.Click += new EventHandler(editToolStripForMachine_Click);
-            contextMenu.MenuItems.Add(editToolStrip);
-
-            MenuItem showToolStrip = new MenuItem();
-            showToolStrip.Text = "Show all details";
-            showToolStrip.Click += new EventHandler(showToolStripForMachine_Click);
-            contextMenu.MenuItems.Add(showToolStrip);
-
-            MenuItem deleteToolStrip = new MenuItem();
-            deleteToolStrip.Text = "Remove machine";
-            deleteToolStrip.Click += new EventHandler(deleteToolStripForMachine_Click);
-            contextMenu.MenuItems.Add(deleteToolStrip);
-
-            return contextMenu;
-        }
-
-        private System.Windows.Forms.ContextMenu GetContextMenuForCustomersGrid()
-        {
-            ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
-            MenuItem editToolStrip = new MenuItem();
-            editToolStrip.Text = "Edit customer details";
-            editToolStrip.Click += new EventHandler(editToolStripForCustomer_Click);
-            contextMenu.MenuItems.Add(editToolStrip);
-
-            MenuItem showToolStrip = new MenuItem();
-            showToolStrip.Text = "Show all details";
-            showToolStrip.Click += new EventHandler(showToolStripForCustomer_Click);
-            contextMenu.MenuItems.Add(showToolStrip);
-
-            MenuItem deleteToolStrip = new MenuItem();
-            deleteToolStrip.Text = "Remove customer";
-            deleteToolStrip.Click += new EventHandler(deleteToolStripForCustomer_Click);
-            contextMenu.MenuItems.Add(deleteToolStrip);
-
-            return contextMenu;
-        }
-
-        private void deleteToolStripForMachine_Click(object sender, EventArgs e)
-        {
-            DialogResult dlgResult = MessageBox.Show("Do you want to remove the selected machine?", "Remove machine",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
-            if (dlgResult == System.Windows.Forms.DialogResult.OK)
-            {
-                m_MachinesHandler.RemoveMachine();
-                dataGridViewMachines.ClearSelection();
-            }
-        }
-
-        private void showToolStripForMachine_Click(object sender, EventArgs e)
-        {
-            AddMachineForm addForm = new AddMachineForm(m_MachinesHandler, Operation.Show);
-            addForm.ShowDialog();
-        }
-
         private void deleteToolStripForCustomer_Click(object sender, EventArgs e)
         {
             DialogResult dlgResult = MessageBox.Show("Do you want to remove the selected customer?", "Remove customer",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
             if (dlgResult == System.Windows.Forms.DialogResult.OK)
             {
-                m_CustomersHandler.RemoveCustomer();
                 dataGridViewCustomers.ClearSelection();
+                m_CustomersHandler.RemoveCustomer();
             }
         }
 
@@ -263,41 +365,15 @@ namespace ClinicUI
             addForm.ShowDialog();
         }
 
-        private void dataGridViewMachines_SelectionChanged(object sender, EventArgs e)
-        {
-            if ((sender as DataGridView).SelectedRows.Count > 0)
-            {
-                m_MachinesHandler.SelectMachine((sender as DataGridView).SelectedRows[0].DataBoundItem as Machine);
-            }
-        }
-
-        private void editToolStripForMachine_Click(object sender, EventArgs e)
-        {
-            AddMachineForm addForm = new AddMachineForm(m_MachinesHandler, Operation.Edit);
-            addForm.ShowDialog();
-        }
-
         private void editToolStripForCustomer_Click(object sender, EventArgs e)
         {
             AddCustomerForm addForm = new AddCustomerForm(m_CustomersHandler, Operation.Edit);
             addForm.ShowDialog();
         }
 
-        private void m_MachinesHandler_MachinesUpdated(object sender, EventArgs e)
-        {
-            UpdateMachineDataSource();
-        }
-
-
         private void m_CustomersHandler_CustomersUpdated(object sender, EventArgs e)
         {
             UpdateCustomerDataSource();
-        }
-
-        private void btnAddMachine_Click(object sender, EventArgs e)
-        {
-            AddMachineForm addForm = new AddMachineForm(m_MachinesHandler, Operation.Add);
-            addForm.ShowDialog();
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -316,9 +392,6 @@ namespace ClinicUI
                 m_CustomersHandler.SelectCustomer((sender as DataGridView).SelectedRows[0].DataBoundItem as Customer);
             }
         }
-
-
-        #endregion
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -413,5 +486,76 @@ namespace ClinicUI
             }
         }
 
+        #endregion
+
+        #region Procedure grid 
+
+        private void btnAddProcedure_Click(object sender, EventArgs e)
+        {
+            AddProcedureForm procedureForm = new AddProcedureForm(m_ProcedureHandler, Operation.Add);
+            procedureForm.ShowDialog();
+        }
+
+        private void deleteToolStripForProcedure_Click(object sender, EventArgs e)
+        {
+            DialogResult dlgResult = MessageBox.Show("Do you want to remove the selected procedure?", "Remove procedure",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            if (dlgResult == System.Windows.Forms.DialogResult.OK)
+            {
+                dataGridViewProcedures.ClearSelection();
+                m_ProcedureHandler.RemoveProcedure();
+            }
+        }
+
+        private void showToolStripForProcedure_Click(object sender, EventArgs e)
+        {
+            AddProcedureForm addForm = new AddProcedureForm(m_ProcedureHandler, Operation.Show);
+            addForm.ShowDialog();
+        }
+
+        private void editToolStripForProcedure_Click(object sender, EventArgs e)
+        {
+            AddProcedureForm addForm = new AddProcedureForm(m_ProcedureHandler, Operation.Edit);
+            addForm.ShowDialog();
+        }
+
+        private void m_ProcedureHandler_ProceduresUpdated(object sender, EventArgs e)
+        {
+            UpdateProcedureDataSource();
+        }
+
+        private void dataGridViewProcedures_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                if (e.ColumnIndex > -1 && e.RowIndex > -1)
+                {
+                    dataGridViewProcedures.CurrentCell = dataGridViewProcedures.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    ContextMenu contextMenu = GetContextMenuFoProcedureGrid();
+                    contextMenu.Show(dataGridViewProcedures, new Point(e.RowIndex, e.ColumnIndex));
+                }
+            }
+        }
+
+        private void dataGridViewProcedures_SelectionChanged(object sender, EventArgs e)
+        {
+            if ((sender as DataGridView).SelectedRows.Count > 0)
+            {
+                m_ProcedureHandler.SelectProcedure((sender as DataGridView).SelectedRows[0].DataBoundItem as Procedure);
+            }
+        }
+
+        private void dataGridViewProcedures_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridViewProcedures.Rows[e.RowIndex].DataBoundItem != null
+                && dataGridViewProcedures.Columns[e.ColumnIndex].DataPropertyName.Equals("Machine"))
+            {
+                e.Value = (dataGridViewProcedures.Rows[e.RowIndex].DataBoundItem as Procedure).Machine.Name;
+            }
+        }
+
+        #endregion
+
+        #endregion
     }
 }

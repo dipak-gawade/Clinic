@@ -60,7 +60,13 @@ namespace ClinicUI
         {
             string errorOrigin = string.Empty;
             string errorMessage = string.Empty;
-            m_CustomersHandler.AddOrEditCustomer(txtMobileNumber.Text,
+            int id = -1;
+            if (m_Operation == Operation.Edit)
+            {
+                id = m_CustomersHandler.SelectedCustomer.Id;
+            }
+
+            m_CustomersHandler.AddOrEditCustomer(id, txtMobileNumber.Text,
                 txtFirstName.Text,
                 txtLastName.Text,
                 txtReferredBy.Text,

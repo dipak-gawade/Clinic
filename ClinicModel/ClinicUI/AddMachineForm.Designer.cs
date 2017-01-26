@@ -32,10 +32,6 @@
             this.txtSerialNumber = new System.Windows.Forms.TextBox();
             this.lblShortName = new System.Windows.Forms.Label();
             this.txtShortName = new System.Windows.Forms.TextBox();
-            this.txtTimePerSession = new System.Windows.Forms.TextBox();
-            this.lblTimePerSession = new System.Windows.Forms.Label();
-            this.txtPricePerSession = new System.Windows.Forms.TextBox();
-            this.lblPricePerSession = new System.Windows.Forms.Label();
             this.txtPurpose = new System.Windows.Forms.TextBox();
             this.lblPurpose = new System.Windows.Forms.Label();
             this.lblDateOfPurchase = new System.Windows.Forms.Label();
@@ -53,14 +49,12 @@
             this.lblImagePath = new System.Windows.Forms.Label();
             this.txtImagePath = new System.Windows.Forms.TextBox();
             this.grpBasicDetails = new System.Windows.Forms.GroupBox();
-            this.grpSessionDetails = new System.Windows.Forms.GroupBox();
             this.grpPurchaseDetails = new System.Windows.Forms.GroupBox();
             this.grpAdditionalDetails = new System.Windows.Forms.GroupBox();
+            this.btnBrowse = new System.Windows.Forms.Button();
             this.grpCurrentStatus = new System.Windows.Forms.GroupBox();
             this.cbActive = new System.Windows.Forms.CheckBox();
-            this.btnBrowse = new System.Windows.Forms.Button();
             this.grpBasicDetails.SuspendLayout();
-            this.grpSessionDetails.SuspendLayout();
             this.grpPurchaseDetails.SuspendLayout();
             this.grpAdditionalDetails.SuspendLayout();
             this.grpCurrentStatus.SuspendLayout();
@@ -97,38 +91,6 @@
             this.txtShortName.Name = "txtShortName";
             this.txtShortName.Size = new System.Drawing.Size(175, 20);
             this.txtShortName.TabIndex = 2;
-            // 
-            // txtPricePerSession
-            // 
-            this.txtPricePerSession.Location = new System.Drawing.Point(152, 67);
-            this.txtPricePerSession.Name = "txtPricePerSession";
-            this.txtPricePerSession.Size = new System.Drawing.Size(175, 20);
-            this.txtPricePerSession.TabIndex = 6;
-            // 
-            // lblTimePerSession
-            // 
-            this.lblTimePerSession.AutoSize = true;
-            this.lblTimePerSession.Location = new System.Drawing.Point(17, 30);
-            this.lblTimePerSession.Name = "lblTimePerSession";
-            this.lblTimePerSession.Size = new System.Drawing.Size(86, 13);
-            this.lblTimePerSession.TabIndex = 4;
-            this.lblTimePerSession.Text = "Time per session";
-            // 
-            // txtTimePerSession
-            // 
-            this.txtTimePerSession.Location = new System.Drawing.Point(152, 30);
-            this.txtTimePerSession.Name = "txtTimePerSession";
-            this.txtTimePerSession.Size = new System.Drawing.Size(175, 20);
-            this.txtTimePerSession.TabIndex = 5;
-            // 
-            // lblPricePerSession
-            // 
-            this.lblPricePerSession.AutoSize = true;
-            this.lblPricePerSession.Location = new System.Drawing.Point(17, 67);
-            this.lblPricePerSession.Name = "lblPricePerSession";
-            this.lblPricePerSession.Size = new System.Drawing.Size(87, 13);
-            this.lblPricePerSession.TabIndex = 6;
-            this.lblPricePerSession.Text = "Price per session";
             // 
             // txtPurpose
             // 
@@ -225,7 +187,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(264, 332);
+            this.btnSave.Location = new System.Drawing.Point(238, 288);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(111, 31);
             this.btnSave.TabIndex = 13;
@@ -235,7 +197,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(381, 332);
+            this.btnCancel.Location = new System.Drawing.Point(369, 288);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(111, 31);
             this.btnCancel.TabIndex = 14;
@@ -288,19 +250,6 @@
             this.grpBasicDetails.TabStop = false;
             this.grpBasicDetails.Text = "Basic details";
             // 
-            // grpSessionDetails
-            // 
-            this.grpSessionDetails.Controls.Add(this.lblPricePerSession);
-            this.grpSessionDetails.Controls.Add(this.txtPricePerSession);
-            this.grpSessionDetails.Controls.Add(this.lblTimePerSession);
-            this.grpSessionDetails.Controls.Add(this.txtTimePerSession);
-            this.grpSessionDetails.Location = new System.Drawing.Point(12, 221);
-            this.grpSessionDetails.Name = "grpSessionDetails";
-            this.grpSessionDetails.Size = new System.Drawing.Size(337, 100);
-            this.grpSessionDetails.TabIndex = 5;
-            this.grpSessionDetails.TabStop = false;
-            this.grpSessionDetails.Text = "Session details";
-            // 
             // grpPurchaseDetails
             // 
             this.grpPurchaseDetails.Controls.Add(this.dateTimePickerPurchaseDate);
@@ -330,12 +279,22 @@
             this.grpAdditionalDetails.TabStop = false;
             this.grpAdditionalDetails.Text = "Additional details";
             // 
+            // btnBrowse
+            // 
+            this.btnBrowse.Location = new System.Drawing.Point(238, 93);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(74, 23);
+            this.btnBrowse.TabIndex = 11;
+            this.btnBrowse.Text = "Browse";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
             // grpCurrentStatus
             // 
             this.grpCurrentStatus.Controls.Add(this.cbActive);
-            this.grpCurrentStatus.Location = new System.Drawing.Point(369, 265);
+            this.grpCurrentStatus.Location = new System.Drawing.Point(12, 220);
             this.grpCurrentStatus.Name = "grpCurrentStatus";
-            this.grpCurrentStatus.Size = new System.Drawing.Size(321, 56);
+            this.grpCurrentStatus.Size = new System.Drawing.Size(337, 48);
             this.grpCurrentStatus.TabIndex = 12;
             this.grpCurrentStatus.TabStop = false;
             this.grpCurrentStatus.Text = "Current status";
@@ -350,25 +309,14 @@
             this.cbActive.Text = "Active";
             this.cbActive.UseVisualStyleBackColor = true;
             // 
-            // btnBrowse
-            // 
-            this.btnBrowse.Location = new System.Drawing.Point(238, 93);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(74, 23);
-            this.btnBrowse.TabIndex = 11;
-            this.btnBrowse.Text = "Browse";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            // 
             // AddMachineForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(702, 375);
+            this.ClientSize = new System.Drawing.Size(702, 330);
             this.Controls.Add(this.grpCurrentStatus);
             this.Controls.Add(this.grpAdditionalDetails);
             this.Controls.Add(this.grpPurchaseDetails);
-            this.Controls.Add(this.grpSessionDetails);
             this.Controls.Add(this.grpBasicDetails);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
@@ -376,8 +324,6 @@
             this.Text = "Add Machine";
             this.grpBasicDetails.ResumeLayout(false);
             this.grpBasicDetails.PerformLayout();
-            this.grpSessionDetails.ResumeLayout(false);
-            this.grpSessionDetails.PerformLayout();
             this.grpPurchaseDetails.ResumeLayout(false);
             this.grpPurchaseDetails.PerformLayout();
             this.grpAdditionalDetails.ResumeLayout(false);
@@ -394,10 +340,6 @@
         private System.Windows.Forms.TextBox txtSerialNumber;
         private System.Windows.Forms.Label lblShortName;
         private System.Windows.Forms.TextBox txtShortName;
-        private System.Windows.Forms.TextBox txtPricePerSession;
-        private System.Windows.Forms.Label lblTimePerSession;
-        private System.Windows.Forms.TextBox txtTimePerSession;
-        private System.Windows.Forms.Label lblPricePerSession;
         private System.Windows.Forms.TextBox txtPurpose;
         private System.Windows.Forms.Label lblPurpose;
         private System.Windows.Forms.Label lblDateOfPurchase;
@@ -415,7 +357,6 @@
         private System.Windows.Forms.Label lblImagePath;
         private System.Windows.Forms.TextBox txtImagePath;
         private System.Windows.Forms.GroupBox grpBasicDetails;
-        private System.Windows.Forms.GroupBox grpSessionDetails;
         private System.Windows.Forms.GroupBox grpPurchaseDetails;
         private System.Windows.Forms.GroupBox grpAdditionalDetails;
         private System.Windows.Forms.GroupBox grpCurrentStatus;

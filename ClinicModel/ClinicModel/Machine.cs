@@ -29,9 +29,5 @@ namespace ClinicModel
         public string ImagePath { get; set; }
         
         public bool IsActive { get; set; }
-        
-        public int PerSessionPrice { get; set; }
-        
-        public int TimePerSessionInMinutes { get; set; }
     }
 }
