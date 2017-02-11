@@ -15,7 +15,7 @@ namespace ClinicBusinessLogic
         private DoctorsHandler m_doctorsHandler = null;
         private Session m_SelectedSession;
 
-        public Session SelectedSession { get; }
+        public Session SelectedSession { get { return m_SelectedSession; } }
 
         public SessionsHandler(CustomersHandler customersHandler, ProceduresHandler proceduresHandler, 
             DoctorsHandler doctorsHandler)

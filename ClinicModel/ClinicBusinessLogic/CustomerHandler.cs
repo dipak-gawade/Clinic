@@ -48,7 +48,7 @@ namespace ClinicBusinessLogic
             errorMessage = null;
             errorOrigin = null;
 
-            Customer newCustomer = (id == -1) ? new Customer(GetIdForNewCustomer()) : m_SelectedCustomer;
+            var newCustomer = (id == -1) ? new Customer(GetIdForNewCustomer()) : m_SelectedCustomer;
             if (id == -1)
             {
                 m_Customers.Add(newCustomer);
@@ -66,6 +66,25 @@ namespace ClinicBusinessLogic
             newCustomer.Gender = gender;
 
             this.m_SelectedCustomer = newCustomer;
+
+
+            using (var db = new ClinicModelContext())
+            {
+                if (id == -1)
+                {
+                    m_Customers.Add(newCustomer);
+                    db.Customers.Add(newCustomer);
+                }
+                else
+                {
+                    var existing = db.Customers.Find(id);
+                    existing = newCustomer;
+                    db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
+
             RaiseCustomersUpdatedEvent();
 
             return true;

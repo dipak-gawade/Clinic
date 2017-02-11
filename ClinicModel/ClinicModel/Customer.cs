@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicModel
 {
@@ -10,9 +11,8 @@ namespace ClinicModel
     /// </summary>
     public class Customer
     {
-        public int m_Id = 0;
-
-        public int Id { get { return m_Id; } }
+        [Key]
+        public int Id { get; set; }
 
         public string FirstName { get; set; }
 
@@ -36,7 +36,12 @@ namespace ClinicModel
 
         public Customer(int id)
         {
-            m_Id = id;
+            Id = id;
+        }
+
+        public Customer()
+        {
+            Id = 0;
         }
     }
 

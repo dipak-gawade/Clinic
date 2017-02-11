@@ -213,7 +213,7 @@ namespace ClinicUI
 
             dataGridViewSessions.SelectionChanged += new EventHandler(dataGridViewSessions_SelectionChanged);
             dataGridViewSessions.CellMouseDown += new DataGridViewCellMouseEventHandler(dataGridViewSessions_CellMouseDown);
-            m_SessionsHandler.DoctorsUpdated += new EventHandler(m_SessionsHandler_SessionssUpdated);
+            //m_SessionsHandler.Ses += new EventHandler(m_SessionsHandler_SessionssUpdated);
         }
 
         private void SetMachinesGridDisplayColumns()

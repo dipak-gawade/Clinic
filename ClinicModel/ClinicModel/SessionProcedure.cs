@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicModel
 {
@@ -10,6 +11,9 @@ namespace ClinicModel
     /// </summary>
     public class SessionProcedure
     {
+        [Key]
+        public int Id { get; set; }
+
         public Procedure Procedure { get; set; }
 
         public DateTime StartTime { get; set; }

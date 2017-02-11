@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicModel
 {
@@ -10,6 +11,7 @@ namespace ClinicModel
     /// </summary>
     public class Machine
     {
+        [Key]
         public string SerialNumber { get; set; }
 
         public string ShortName { get; set; }
