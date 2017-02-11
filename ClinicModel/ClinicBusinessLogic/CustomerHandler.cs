@@ -16,6 +16,14 @@ namespace ClinicBusinessLogic
 
         #endregion
 
+        public CustomersHandler()
+        {
+            using (var db = new ClinicModelContext())
+            {
+                m_Customers = db.Customers.ToList<Customer>(); 
+            }
+        }
+
         #region Properties
 
         public List<Customer> Customers { get { return m_Customers; } }
@@ -82,6 +90,11 @@ namespace ClinicBusinessLogic
         public List<Customer> GetCustomersByLastName(string lastName)
         {
             return m_Customers.FindAll(x => x.LastName == lastName);
+        }
+
+        public Customer GetCustomersById(int id)
+        {
+            return m_Customers.Find(x => x.Id == id);
         }
 
         #endregion

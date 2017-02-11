@@ -41,27 +41,49 @@
             this.rbFirstName = new System.Windows.Forms.RadioButton();
             this.btnAdd = new System.Windows.Forms.Button();
             this.dataGridViewCustomers = new System.Windows.Forms.DataGridView();
-            this.tabPageMachines = new System.Windows.Forms.TabPage();
+            this.tabMachines = new System.Windows.Forms.TabPage();
             this.btnAddMachine = new System.Windows.Forms.Button();
             this.dataGridViewMachines = new System.Windows.Forms.DataGridView();
             this.tabProcedures = new System.Windows.Forms.TabPage();
-            this.dataGridViewProcedures = new System.Windows.Forms.DataGridView();
             this.btnAddProcedure = new System.Windows.Forms.Button();
+            this.dataGridViewProcedures = new System.Windows.Forms.DataGridView();
+            this.tabDoctors = new System.Windows.Forms.TabPage();
+            this.btnAddDoctor = new System.Windows.Forms.Button();
+            this.dataGridViewDoctors = new System.Windows.Forms.DataGridView();
+            this.tabSessions = new System.Windows.Forms.TabPage();
+            this.btnSession = new System.Windows.Forms.Button();
+            this.gbSessionSearch = new System.Windows.Forms.GroupBox();
+            this.rbListAllSessions = new System.Windows.Forms.RadioButton();
+            this.btnSearchSession = new System.Windows.Forms.Button();
+            this.txtSessionId = new System.Windows.Forms.TextBox();
+            this.txtFirstNameSession = new System.Windows.Forms.TextBox();
+            this.rbByDate = new System.Windows.Forms.RadioButton();
+            this.rbSessionId = new System.Windows.Forms.RadioButton();
+            this.rbFirstNameSession = new System.Windows.Forms.RadioButton();
+            this.dataGridViewSessions = new System.Windows.Forms.DataGridView();
+            this.dateTimePickerByDate = new System.Windows.Forms.DateTimePicker();
             this.tabControlWHole.SuspendLayout();
             this.tabCustomers.SuspendLayout();
             this.gbSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCustomers)).BeginInit();
-            this.tabPageMachines.SuspendLayout();
+            this.tabMachines.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMachines)).BeginInit();
             this.tabProcedures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProcedures)).BeginInit();
+            this.tabDoctors.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDoctors)).BeginInit();
+            this.tabSessions.SuspendLayout();
+            this.gbSessionSearch.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSessions)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControlWHole
             // 
             this.tabControlWHole.Controls.Add(this.tabCustomers);
-            this.tabControlWHole.Controls.Add(this.tabPageMachines);
+            this.tabControlWHole.Controls.Add(this.tabMachines);
             this.tabControlWHole.Controls.Add(this.tabProcedures);
+            this.tabControlWHole.Controls.Add(this.tabDoctors);
+            this.tabControlWHole.Controls.Add(this.tabSessions);
             this.tabControlWHole.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlWHole.Location = new System.Drawing.Point(0, 0);
             this.tabControlWHole.Name = "tabControlWHole";
@@ -197,17 +219,17 @@
             this.dataGridViewCustomers.Size = new System.Drawing.Size(675, 221);
             this.dataGridViewCustomers.TabIndex = 1;
             // 
-            // tabPageMachines
+            // tabMachines
             // 
-            this.tabPageMachines.Controls.Add(this.btnAddMachine);
-            this.tabPageMachines.Controls.Add(this.dataGridViewMachines);
-            this.tabPageMachines.Location = new System.Drawing.Point(4, 22);
-            this.tabPageMachines.Name = "tabPageMachines";
-            this.tabPageMachines.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMachines.Size = new System.Drawing.Size(691, 366);
-            this.tabPageMachines.TabIndex = 0;
-            this.tabPageMachines.Text = "Machines";
-            this.tabPageMachines.UseVisualStyleBackColor = true;
+            this.tabMachines.Controls.Add(this.btnAddMachine);
+            this.tabMachines.Controls.Add(this.dataGridViewMachines);
+            this.tabMachines.Location = new System.Drawing.Point(4, 22);
+            this.tabMachines.Name = "tabMachines";
+            this.tabMachines.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMachines.Size = new System.Drawing.Size(691, 366);
+            this.tabMachines.TabIndex = 0;
+            this.tabMachines.Text = "Machines";
+            this.tabMachines.UseVisualStyleBackColor = true;
             // 
             // btnAddMachine
             // 
@@ -238,14 +260,6 @@
             this.tabProcedures.Text = "Procedures";
             this.tabProcedures.UseVisualStyleBackColor = true;
             // 
-            // dataGridViewProcedures
-            // 
-            this.dataGridViewProcedures.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewProcedures.Location = new System.Drawing.Point(8, 8);
-            this.dataGridViewProcedures.Name = "dataGridViewProcedures";
-            this.dataGridViewProcedures.Size = new System.Drawing.Size(675, 303);
-            this.dataGridViewProcedures.TabIndex = 1;
-            // 
             // btnAddProcedure
             // 
             this.btnAddProcedure.Location = new System.Drawing.Point(246, 322);
@@ -255,6 +269,166 @@
             this.btnAddProcedure.Text = "Add Procedure";
             this.btnAddProcedure.UseVisualStyleBackColor = true;
             this.btnAddProcedure.Click += new System.EventHandler(this.btnAddProcedure_Click);
+            // 
+            // dataGridViewProcedures
+            // 
+            this.dataGridViewProcedures.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewProcedures.Location = new System.Drawing.Point(8, 8);
+            this.dataGridViewProcedures.Name = "dataGridViewProcedures";
+            this.dataGridViewProcedures.Size = new System.Drawing.Size(675, 303);
+            this.dataGridViewProcedures.TabIndex = 1;
+            // 
+            // tabDoctors
+            // 
+            this.tabDoctors.Controls.Add(this.btnAddDoctor);
+            this.tabDoctors.Controls.Add(this.dataGridViewDoctors);
+            this.tabDoctors.Location = new System.Drawing.Point(4, 22);
+            this.tabDoctors.Name = "tabDoctors";
+            this.tabDoctors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDoctors.Size = new System.Drawing.Size(691, 366);
+            this.tabDoctors.TabIndex = 3;
+            this.tabDoctors.Text = "Doctors";
+            this.tabDoctors.UseVisualStyleBackColor = true;
+            // 
+            // btnAddDoctor
+            // 
+            this.btnAddDoctor.Location = new System.Drawing.Point(241, 320);
+            this.btnAddDoctor.Name = "btnAddDoctor";
+            this.btnAddDoctor.Size = new System.Drawing.Size(197, 36);
+            this.btnAddDoctor.TabIndex = 1;
+            this.btnAddDoctor.Text = "Add Doctor";
+            this.btnAddDoctor.UseVisualStyleBackColor = true;
+            this.btnAddDoctor.Click += new System.EventHandler(this.btnAddDoctor_Click);
+            // 
+            // dataGridViewDoctors
+            // 
+            this.dataGridViewDoctors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewDoctors.Location = new System.Drawing.Point(8, 6);
+            this.dataGridViewDoctors.Name = "dataGridViewDoctors";
+            this.dataGridViewDoctors.Size = new System.Drawing.Size(675, 303);
+            this.dataGridViewDoctors.TabIndex = 0;
+            // 
+            // tabSessions
+            // 
+            this.tabSessions.Controls.Add(this.btnSession);
+            this.tabSessions.Controls.Add(this.gbSessionSearch);
+            this.tabSessions.Controls.Add(this.dataGridViewSessions);
+            this.tabSessions.Location = new System.Drawing.Point(4, 22);
+            this.tabSessions.Name = "tabSessions";
+            this.tabSessions.Size = new System.Drawing.Size(691, 366);
+            this.tabSessions.TabIndex = 4;
+            this.tabSessions.Text = "Sessions";
+            this.tabSessions.UseVisualStyleBackColor = true;
+            // 
+            // btnSession
+            // 
+            this.btnSession.Location = new System.Drawing.Point(246, 323);
+            this.btnSession.Name = "btnSession";
+            this.btnSession.Size = new System.Drawing.Size(198, 32);
+            this.btnSession.TabIndex = 6;
+            this.btnSession.Text = "Add Session";
+            this.btnSession.UseVisualStyleBackColor = true;
+            // 
+            // gbSessionSearch
+            // 
+            this.gbSessionSearch.Controls.Add(this.dateTimePickerByDate);
+            this.gbSessionSearch.Controls.Add(this.rbListAllSessions);
+            this.gbSessionSearch.Controls.Add(this.btnSearchSession);
+            this.gbSessionSearch.Controls.Add(this.txtSessionId);
+            this.gbSessionSearch.Controls.Add(this.txtFirstNameSession);
+            this.gbSessionSearch.Controls.Add(this.rbByDate);
+            this.gbSessionSearch.Controls.Add(this.rbSessionId);
+            this.gbSessionSearch.Controls.Add(this.rbFirstNameSession);
+            this.gbSessionSearch.Location = new System.Drawing.Point(8, 7);
+            this.gbSessionSearch.Name = "gbSessionSearch";
+            this.gbSessionSearch.Size = new System.Drawing.Size(675, 78);
+            this.gbSessionSearch.TabIndex = 5;
+            this.gbSessionSearch.TabStop = false;
+            this.gbSessionSearch.Text = "Search";
+            // 
+            // rbListAllSessions
+            // 
+            this.rbListAllSessions.AutoSize = true;
+            this.rbListAllSessions.Checked = true;
+            this.rbListAllSessions.Location = new System.Drawing.Point(6, 19);
+            this.rbListAllSessions.Name = "rbListAllSessions";
+            this.rbListAllSessions.Size = new System.Drawing.Size(54, 17);
+            this.rbListAllSessions.TabIndex = 7;
+            this.rbListAllSessions.TabStop = true;
+            this.rbListAllSessions.Text = "List all";
+            this.rbListAllSessions.UseVisualStyleBackColor = true;
+            // 
+            // btnSearchSession
+            // 
+            this.btnSearchSession.Location = new System.Drawing.Point(579, 39);
+            this.btnSearchSession.Name = "btnSearchSession";
+            this.btnSearchSession.Size = new System.Drawing.Size(90, 23);
+            this.btnSearchSession.TabIndex = 6;
+            this.btnSearchSession.Text = "Search";
+            this.btnSearchSession.UseVisualStyleBackColor = true;
+            this.btnSearchSession.Click += new System.EventHandler(this.btnSearchSession_Click);
+            // 
+            // txtSessionId
+            // 
+            this.txtSessionId.Enabled = false;
+            this.txtSessionId.Location = new System.Drawing.Point(301, 42);
+            this.txtSessionId.Name = "txtSessionId";
+            this.txtSessionId.Size = new System.Drawing.Size(111, 20);
+            this.txtSessionId.TabIndex = 4;
+            // 
+            // txtFirstNameSession
+            // 
+            this.txtFirstNameSession.Enabled = false;
+            this.txtFirstNameSession.Location = new System.Drawing.Point(139, 42);
+            this.txtFirstNameSession.Name = "txtFirstNameSession";
+            this.txtFirstNameSession.Size = new System.Drawing.Size(111, 20);
+            this.txtFirstNameSession.TabIndex = 3;
+            // 
+            // rbByDate
+            // 
+            this.rbByDate.AutoSize = true;
+            this.rbByDate.Location = new System.Drawing.Point(437, 19);
+            this.rbByDate.Name = "rbByDate";
+            this.rbByDate.Size = new System.Drawing.Size(61, 17);
+            this.rbByDate.TabIndex = 2;
+            this.rbByDate.Text = "By date";
+            this.rbByDate.UseVisualStyleBackColor = true;
+            // 
+            // rbSessionId
+            // 
+            this.rbSessionId.AutoSize = true;
+            this.rbSessionId.Location = new System.Drawing.Point(281, 19);
+            this.rbSessionId.Name = "rbSessionId";
+            this.rbSessionId.Size = new System.Drawing.Size(86, 17);
+            this.rbSessionId.TabIndex = 1;
+            this.rbSessionId.Text = "By session id";
+            this.rbSessionId.UseVisualStyleBackColor = true;
+            // 
+            // rbFirstNameSession
+            // 
+            this.rbFirstNameSession.AutoSize = true;
+            this.rbFirstNameSession.Location = new System.Drawing.Point(120, 19);
+            this.rbFirstNameSession.Name = "rbFirstNameSession";
+            this.rbFirstNameSession.Size = new System.Drawing.Size(85, 17);
+            this.rbFirstNameSession.TabIndex = 0;
+            this.rbFirstNameSession.Text = "By first name";
+            this.rbFirstNameSession.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewSessions
+            // 
+            this.dataGridViewSessions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSessions.Location = new System.Drawing.Point(8, 91);
+            this.dataGridViewSessions.Name = "dataGridViewSessions";
+            this.dataGridViewSessions.Size = new System.Drawing.Size(675, 221);
+            this.dataGridViewSessions.TabIndex = 4;
+            // 
+            // dateTimePickerByDate
+            // 
+            this.dateTimePickerByDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePickerByDate.Location = new System.Drawing.Point(458, 39);
+            this.dateTimePickerByDate.Name = "dateTimePickerByDate";
+            this.dateTimePickerByDate.Size = new System.Drawing.Size(115, 20);
+            this.dateTimePickerByDate.TabIndex = 8;
             // 
             // MainForm
             // 
@@ -269,10 +443,16 @@
             this.gbSearch.ResumeLayout(false);
             this.gbSearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCustomers)).EndInit();
-            this.tabPageMachines.ResumeLayout(false);
+            this.tabMachines.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMachines)).EndInit();
             this.tabProcedures.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProcedures)).EndInit();
+            this.tabDoctors.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDoctors)).EndInit();
+            this.tabSessions.ResumeLayout(false);
+            this.gbSessionSearch.ResumeLayout(false);
+            this.gbSessionSearch.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSessions)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -280,7 +460,7 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabControlWHole;
-        private System.Windows.Forms.TabPage tabPageMachines;
+        private System.Windows.Forms.TabPage tabMachines;
         private System.Windows.Forms.TabPage tabCustomers;
         private System.Windows.Forms.Button btnAddMachine;
         private System.Windows.Forms.DataGridView dataGridViewMachines;
@@ -298,6 +478,21 @@
         private System.Windows.Forms.TabPage tabProcedures;
         private System.Windows.Forms.Button btnAddProcedure;
         private System.Windows.Forms.DataGridView dataGridViewProcedures;
+        private System.Windows.Forms.TabPage tabDoctors;
+        private System.Windows.Forms.Button btnAddDoctor;
+        private System.Windows.Forms.DataGridView dataGridViewDoctors;
+        private System.Windows.Forms.TabPage tabSessions;
+        private System.Windows.Forms.Button btnSession;
+        private System.Windows.Forms.GroupBox gbSessionSearch;
+        private System.Windows.Forms.RadioButton rbListAllSessions;
+        private System.Windows.Forms.Button btnSearchSession;
+        private System.Windows.Forms.TextBox txtSessionId;
+        private System.Windows.Forms.TextBox txtFirstNameSession;
+        private System.Windows.Forms.RadioButton rbByDate;
+        private System.Windows.Forms.RadioButton rbSessionId;
+        private System.Windows.Forms.RadioButton rbFirstNameSession;
+        private System.Windows.Forms.DataGridView dataGridViewSessions;
+        private System.Windows.Forms.DateTimePicker dateTimePickerByDate;
     }
 }
 

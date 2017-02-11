@@ -73,6 +73,11 @@ namespace ClinicBusinessLogic
             RaiseProceduresUpdatedEvent();
         }
 
+        public Procedure GetProcedureByName(string procedureName)
+        {
+            return m_Procedures.Find(x => x.Name == procedureName);
+        }
+
         private void RaiseProceduresUpdatedEvent()
         {
             if (ProceduresUpdated != null)

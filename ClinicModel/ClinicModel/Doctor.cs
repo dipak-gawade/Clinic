@@ -10,6 +10,13 @@ namespace ClinicModel
     /// </summary>
     public class Doctor
     {
+        public Doctor(int id)
+        {
+            Id = id;
+        }
+
+        public int Id { get; private set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

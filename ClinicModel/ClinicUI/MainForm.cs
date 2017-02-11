@@ -16,6 +16,8 @@ namespace ClinicUI
         private MachinesHandler m_MachinesHandler;
         private CustomersHandler m_CustomersHandler;
         private ProceduresHandler m_ProcedureHandler;
+        private DoctorsHandler m_DoctorsHandler;
+        private SessionsHandler m_SessionsHandler;
 
         public MainForm()
         {
@@ -26,11 +28,16 @@ namespace ClinicUI
 
             m_ProcedureHandler = new ProceduresHandler(m_MachinesHandler);
 
+            m_DoctorsHandler = new DoctorsHandler();
+
+            m_SessionsHandler = new SessionsHandler(m_CustomersHandler, m_ProcedureHandler, m_DoctorsHandler);
+
             InitializeGrid();
 
             SetMachinesGridDisplayColumns();
             SetCustomersGridDisplayColumns();
             SetProceduresGridDisplayColumns();
+            SetDoctorsGridDisplayColumns();
 
             UpdateMachineDataSource();
             UpdateCustomerDataSource();
@@ -83,7 +90,7 @@ namespace ClinicUI
             return contextMenu;
         }
 
-        private System.Windows.Forms.ContextMenu GetContextMenuFoProcedureGrid()
+        private System.Windows.Forms.ContextMenu GetContextMenuForProcedureGrid()
         {
             ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
             MenuItem editToolStrip = new MenuItem();
@@ -99,6 +106,48 @@ namespace ClinicUI
             MenuItem deleteToolStrip = new MenuItem();
             deleteToolStrip.Text = "Remove procedure";
             deleteToolStrip.Click += new EventHandler(deleteToolStripForProcedure_Click);
+            contextMenu.MenuItems.Add(deleteToolStrip);
+
+            return contextMenu;
+        }
+
+        private System.Windows.Forms.ContextMenu GetContextMenuForDoctorGrid()
+        {
+            ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+            MenuItem editToolStrip = new MenuItem();
+            editToolStrip.Text = "Edit doctor details";
+            editToolStrip.Click += new EventHandler(editToolStripForDoctor_Click);
+            contextMenu.MenuItems.Add(editToolStrip);
+
+            MenuItem showToolStrip = new MenuItem();
+            showToolStrip.Text = "Show all details";
+            showToolStrip.Click += new EventHandler(showToolStripForDoctor_Click);
+            contextMenu.MenuItems.Add(showToolStrip);
+
+            MenuItem deleteToolStrip = new MenuItem();
+            deleteToolStrip.Text = "Remove doctors";
+            deleteToolStrip.Click += new EventHandler(deleteToolStripForDoctor_Click);
+            contextMenu.MenuItems.Add(deleteToolStrip);
+
+            return contextMenu;
+        }
+
+        private System.Windows.Forms.ContextMenu GetContextMenuForSessionGrid()
+        {
+            ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+            MenuItem editToolStrip = new MenuItem();
+            editToolStrip.Text = "Edit session details";
+            editToolStrip.Click += new EventHandler(editToolStripForSession_Click);
+            contextMenu.MenuItems.Add(editToolStrip);
+
+            MenuItem showToolStrip = new MenuItem();
+            showToolStrip.Text = "Show all details";
+            showToolStrip.Click += new EventHandler(showToolStripForSession_Click);
+            contextMenu.MenuItems.Add(showToolStrip);
+
+            MenuItem deleteToolStrip = new MenuItem();
+            deleteToolStrip.Text = "Remove session";
+            deleteToolStrip.Click += new EventHandler(deleteToolStripForSession_Click);
             contextMenu.MenuItems.Add(deleteToolStrip);
 
             return contextMenu;
@@ -142,6 +191,29 @@ namespace ClinicUI
             dataGridViewProcedures.CellMouseDown += new DataGridViewCellMouseEventHandler(dataGridViewProcedures_CellMouseDown);
             m_ProcedureHandler.ProceduresUpdated += new EventHandler(m_ProcedureHandler_ProceduresUpdated);
 
+            // Doctor grid
+            dataGridViewDoctors.AutoGenerateColumns = false;
+            dataGridViewDoctors.AllowUserToAddRows = false;
+            dataGridViewDoctors.AllowUserToDeleteRows = false;
+            dataGridViewDoctors.AllowUserToOrderColumns = false;
+            dataGridViewDoctors.MultiSelect = false;
+            dataGridViewDoctors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            dataGridViewDoctors.SelectionChanged += new EventHandler(dataGridViewDoctors_SelectionChanged);
+            dataGridViewDoctors.CellMouseDown += new DataGridViewCellMouseEventHandler(dataGridViewDoctors_CellMouseDown);
+            m_DoctorsHandler.DoctorsUpdated += new EventHandler(m_DoctorsHandler_DoctorsUpdated);
+
+            // Session grid
+            dataGridViewSessions.AutoGenerateColumns = false;
+            dataGridViewSessions.AllowUserToAddRows = false;
+            dataGridViewSessions.AllowUserToDeleteRows = false;
+            dataGridViewSessions.AllowUserToOrderColumns = false;
+            dataGridViewSessions.MultiSelect = false;
+            dataGridViewSessions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            dataGridViewSessions.SelectionChanged += new EventHandler(dataGridViewSessions_SelectionChanged);
+            dataGridViewSessions.CellMouseDown += new DataGridViewCellMouseEventHandler(dataGridViewSessions_CellMouseDown);
+            m_SessionsHandler.DoctorsUpdated += new EventHandler(m_SessionsHandler_SessionssUpdated);
         }
 
         private void SetMachinesGridDisplayColumns()
@@ -238,6 +310,58 @@ namespace ClinicUI
             dataGridViewProcedures.Columns[3].ReadOnly = true;
         }
 
+        private void SetDoctorsGridDisplayColumns()
+        {
+            dataGridViewDoctors.ColumnCount = 4;
+
+            dataGridViewDoctors.Columns[0].Name = "FirstName";
+            dataGridViewDoctors.Columns[0].HeaderText = "First name";
+            dataGridViewDoctors.Columns[0].DataPropertyName = "FirstName";
+            dataGridViewDoctors.Columns[0].ReadOnly = true;
+
+            dataGridViewDoctors.Columns[1].Name = "LastName";
+            dataGridViewDoctors.Columns[1].HeaderText = "Last name";
+            dataGridViewDoctors.Columns[1].DataPropertyName = "LastName";
+            dataGridViewDoctors.Columns[1].ReadOnly = true;
+
+            dataGridViewDoctors.Columns[2].Name = "SpectalistIn";
+            dataGridViewDoctors.Columns[2].HeaderText = "Specialist in";
+            dataGridViewDoctors.Columns[2].DataPropertyName = "SpecialistIn";
+            dataGridViewDoctors.Columns[2].ReadOnly = true;
+            dataGridViewDoctors.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dataGridViewDoctors.Columns[3].Name = "MobileNumber";
+            dataGridViewDoctors.Columns[3].HeaderText = "Mobile number";
+            dataGridViewDoctors.Columns[3].DataPropertyName = "MobileNumber";
+            dataGridViewDoctors.Columns[3].ReadOnly = true;
+        }
+
+        private void SetSessionsGridDisplayColumns()
+        {
+            dataGridViewDoctors.ColumnCount = 4;
+
+            dataGridViewDoctors.Columns[0].Name = "Id";
+            dataGridViewDoctors.Columns[0].HeaderText = "Id";
+            dataGridViewDoctors.Columns[0].DataPropertyName = "Id";
+            dataGridViewDoctors.Columns[0].ReadOnly = true;
+
+            dataGridViewDoctors.Columns[1].Name = "Name";
+            dataGridViewDoctors.Columns[1].HeaderText = "Customer name";
+            dataGridViewDoctors.Columns[1].DataPropertyName = "Name";
+            dataGridViewDoctors.Columns[1].ReadOnly = true;
+
+            dataGridViewDoctors.Columns[2].Name = "PatientComplaint";
+            dataGridViewDoctors.Columns[2].HeaderText = "Complaint";
+            dataGridViewDoctors.Columns[2].DataPropertyName = "PatientComplaint";
+            dataGridViewDoctors.Columns[2].ReadOnly = true;
+            dataGridViewDoctors.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dataGridViewDoctors.Columns[3].Name = "ReportTime";
+            dataGridViewDoctors.Columns[3].HeaderText = "Report time";
+            dataGridViewDoctors.Columns[3].DataPropertyName = "ReportTime";
+            dataGridViewDoctors.Columns[3].ReadOnly = true;
+        }
+
         private void UpdateMachineDataSource()
         {
             BindingSource bs = new BindingSource();
@@ -260,6 +384,22 @@ namespace ClinicUI
             bs.DataSource = m_ProcedureHandler.Procedures;
             dataGridViewProcedures.DataSource = bs;
             dataGridViewProcedures.Refresh();
+        }
+
+        private void UpdateDoctorDataSource()
+        {
+            BindingSource bs = new BindingSource();
+            bs.DataSource = m_DoctorsHandler.Doctors;
+            dataGridViewDoctors.DataSource = bs;
+            dataGridViewDoctors.Refresh();
+        }
+
+        private void UpdateSessionDataSource()
+        {
+            BindingSource bs = new BindingSource();
+            bs.DataSource = m_SessionsHandler.Sessions;
+            dataGridViewSessions.DataSource = bs;
+            dataGridViewSessions.Refresh();
         }
 
         private void BindToSelectedCustomer()
@@ -531,7 +671,7 @@ namespace ClinicUI
                 if (e.ColumnIndex > -1 && e.RowIndex > -1)
                 {
                     dataGridViewProcedures.CurrentCell = dataGridViewProcedures.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    ContextMenu contextMenu = GetContextMenuFoProcedureGrid();
+                    ContextMenu contextMenu = GetContextMenuForProcedureGrid();
                     contextMenu.Show(dataGridViewProcedures, new Point(e.RowIndex, e.ColumnIndex));
                 }
             }
@@ -552,6 +692,129 @@ namespace ClinicUI
             {
                 e.Value = (dataGridViewProcedures.Rows[e.RowIndex].DataBoundItem as Procedure).Machine.Name;
             }
+        }
+
+        #endregion
+
+        #region Doctor grid
+
+        private void btnAddDoctor_Click(object sender, EventArgs e)
+        {
+            AddDoctorForm addForm = new AddDoctorForm(m_DoctorsHandler, Operation.Add);
+            addForm.ShowDialog(this);
+        }
+
+        private void deleteToolStripForDoctor_Click(object sender, EventArgs e)
+        {
+            DialogResult dlgResult = MessageBox.Show("Do you want to remove the selected doctor?", "Remove doctor",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            if (dlgResult == System.Windows.Forms.DialogResult.OK)
+            {
+                dataGridViewDoctors.ClearSelection();
+                m_DoctorsHandler.RemoveDoctor();
+            }
+        }
+
+        private void showToolStripForDoctor_Click(object sender, EventArgs e)
+        {
+            AddDoctorForm addForm = new AddDoctorForm(m_DoctorsHandler, Operation.Show);
+            addForm.ShowDialog();
+        }
+
+        private void editToolStripForDoctor_Click(object sender, EventArgs e)
+        {
+            AddDoctorForm addForm = new AddDoctorForm(m_DoctorsHandler, Operation.Edit);
+            addForm.ShowDialog();
+        }
+
+        private void m_DoctorsHandler_DoctorsUpdated(object sender, EventArgs e)
+        {
+            UpdateDoctorDataSource();
+        }
+
+        private void dataGridViewDoctors_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                if (e.ColumnIndex > -1 && e.RowIndex > -1)
+                {
+                    dataGridViewDoctors.CurrentCell = dataGridViewDoctors.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    ContextMenu contextMenu = GetContextMenuForDoctorGrid();
+                    contextMenu.Show(dataGridViewDoctors, new Point(e.RowIndex, e.ColumnIndex));
+                }
+            }
+        }
+
+        private void dataGridViewDoctors_SelectionChanged(object sender, EventArgs e)
+        {
+            if ((sender as DataGridView).SelectedRows.Count > 0)
+            {
+                m_DoctorsHandler.SelectDoctor((sender as DataGridView).SelectedRows[0].DataBoundItem as Doctor);
+            }
+        }
+
+        #endregion
+
+        #region Session grid
+
+        private void btnAddSession_Click(object sender, EventArgs e)
+        {
+            AddDoctorForm addForm = new AddDoctorForm(m_DoctorsHandler, Operation.Add);
+            addForm.ShowDialog(this);
+        }
+
+        private void deleteToolStripForSession_Click(object sender, EventArgs e)
+        {
+            DialogResult dlgResult = MessageBox.Show("Do you want to remove the selected session?", "Remove session",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            if (dlgResult == System.Windows.Forms.DialogResult.OK)
+            {
+                dataGridViewSessions.ClearSelection();
+                m_SessionsHandler.RemoveSession();
+            }
+        }
+
+        private void showToolStripForSession_Click(object sender, EventArgs e)
+        {
+            AddDoctorForm addForm = new AddDoctorForm(m_DoctorsHandler, Operation.Show);
+            addForm.ShowDialog();
+        }
+
+        private void editToolStripForSession_Click(object sender, EventArgs e)
+        {
+            AddDoctorForm addForm = new AddDoctorForm(m_DoctorsHandler, Operation.Edit);
+            addForm.ShowDialog();
+        }
+
+        private void m_SessionsHandler_SessionsUpdated(object sender, EventArgs e)
+        {
+            UpdateSessionDataSource();
+        }
+
+        private void dataGridViewSessions_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                if (e.ColumnIndex > -1 && e.RowIndex > -1)
+                {
+                    dataGridViewSessions.CurrentCell = dataGridViewSessions.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    ContextMenu contextMenu = GetContextMenuForSessionGrid();
+                    contextMenu.Show(dataGridViewSessions, new Point(e.RowIndex, e.ColumnIndex));
+                }
+            }
+        }
+
+        private void dataGridViewSessions_SelectionChanged(object sender, EventArgs e)
+        {
+            if ((sender as DataGridView).SelectedRows.Count > 0)
+            {
+                m_SessionsHandler.SelectSession((sender as DataGridView).SelectedRows[0].DataBoundItem as Session);
+            }
+        }
+
+        private void btnSearchSession_Click(object sender, EventArgs e)
+        {
+
         }
 
         #endregion
