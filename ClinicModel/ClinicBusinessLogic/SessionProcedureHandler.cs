@@ -32,11 +32,20 @@ namespace ClinicBusinessLogic
             errorOrigin = string.Empty;
             errorMessage = string.Empty;
 
+            bool isNewEntry = false;
             SessionProcedure newSessionProcedure = m_proceduresInTheSession.Find(x => x.Procedure.Name.Equals(procedureName));
             if (newSessionProcedure == null)
             {
-                newSessionProcedure = new SessionProcedure();
+                int assignId = 1;
+                if (m_proceduresInTheSession.Count > 0)
+                {
+                    assignId = m_proceduresInTheSession[m_proceduresInTheSession.Count - 1].Id + 1;
+                }
+
+                newSessionProcedure = new SessionProcedure(assignId);
                 newSessionProcedure.Procedure = m_ProceduresHandler.GetProcedureByName(procedureName);
+
+                isNewEntry = true;
             }
 
             newSessionProcedure.StartTime = startTime;
@@ -47,6 +56,21 @@ namespace ClinicBusinessLogic
             newSessionProcedure.DoctorSuggested = m_DoctorsHandler.Doctors.Find(x => x.Id == doctorSuggested);
             newSessionProcedure.AdditionalComments = additionalComments;
 
+            using (var db = new ClinicModelContext())
+            {
+                if (isNewEntry)
+                {
+                    db.SessionProcedures.Add(newSessionProcedure);
+                }
+                else
+                {
+                    var existing = db.SessionProcedures.Find(newSessionProcedure.Id);
+                    existing = newSessionProcedure;
+                    db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
 
             return true;
         }

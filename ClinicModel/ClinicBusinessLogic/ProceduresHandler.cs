@@ -23,6 +23,10 @@ namespace ClinicBusinessLogic
         public ProceduresHandler(MachinesHandler machineHandler)
         {
             m_MachinesHandler = machineHandler;
+            using (var db = new ClinicModelContext())
+            {
+                m_Procedures = db.Procedures.ToList<Procedure>(); 
+            }
         }
 
         public void SelectProcedure(Procedure procedure)
@@ -59,6 +63,23 @@ namespace ClinicBusinessLogic
 
             m_SelectedProcedure = newProcedure;
             RaiseProceduresUpdatedEvent();
+
+            using (var db = new ClinicModelContext())
+            {
+                if (id == -1)
+                {
+                    db.Procedures.Add(newProcedure);
+                }
+                else
+                {
+                    var existing = db.Procedures.Find(id);
+                    existing = newProcedure;
+                    db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
+
             return true;
         }
 

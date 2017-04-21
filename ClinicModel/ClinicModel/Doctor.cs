@@ -11,6 +11,11 @@ namespace ClinicModel
     /// </summary>
     public class Doctor
     {
+        public Doctor()
+        {
+            Id = 0;
+        }
+
         public Doctor(int id)
         {
             Id = id;

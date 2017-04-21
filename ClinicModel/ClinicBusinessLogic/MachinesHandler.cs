@@ -28,6 +28,14 @@ namespace ClinicBusinessLogic
 
         #region Public methods
 
+        public MachinesHandler()
+        {
+            using (var db = new ClinicModelContext())
+            {
+                m_Machines = db.Machines.ToList<Machine>(); 
+            }
+        }
+
         public void SelectMachine(Machine machineSelected)
         {
             m_SelectedMachine = machineSelected;
@@ -41,12 +49,14 @@ namespace ClinicBusinessLogic
             errorMessage = null;
             errorOrigin = null;
 
+            bool isNewEntry = false;
             Machine newMachine = GetMachineBySerialNumber(serialNumber);
             if (newMachine == null)
             {
                 newMachine = new Machine();
                 newMachine.SerialNumber = serialNumber;
                 m_Machines.Add(newMachine);
+                isNewEntry = true;
             }
 
             newMachine.ShortName = shortName;
@@ -60,6 +70,22 @@ namespace ClinicBusinessLogic
             newMachine.IsActive = isActive;
 
             RaiseMachinesUpdatedEvent();
+
+            using (var db = new ClinicModelContext())
+            {
+                if (isNewEntry)
+                {
+                    db.Machines.Add(newMachine);
+                }
+                else
+                {
+                    var existing = db.Machines.Find(serialNumber);
+                    existing = newMachine;
+                    db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
 
             return true;
         }

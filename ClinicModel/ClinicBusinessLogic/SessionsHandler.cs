@@ -23,6 +23,10 @@ namespace ClinicBusinessLogic
             m_ProceduresHandler = proceduresHandler;
             m_CustomersHandler = customersHandler;
             m_doctorsHandler = doctorsHandler;
+            using (var db = new ClinicModelContext())
+            {
+                m_Sessions = db.Sessions.ToList<Session>(); 
+            }
         }
 
         public List<Session> Sessions { get { return m_Sessions; } }
@@ -54,6 +58,22 @@ namespace ClinicBusinessLogic
             newSession.DiscountedFees = discountedFees;
 
             newSession.Procedures = sessionProcedures;
+
+            using (var db = new ClinicModelContext())
+            {
+                if (id == -1)
+                {
+                    db.Sessions.Add(newSession);
+                }
+                else
+                {
+                    var existing = db.Sessions.Find(id);
+                    existing = newSession;
+                    db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
 
             return true;
         }

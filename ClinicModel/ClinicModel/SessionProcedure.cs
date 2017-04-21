@@ -11,6 +11,16 @@ namespace ClinicModel
     /// </summary>
     public class SessionProcedure
     {
+        public SessionProcedure()
+        {
+            Id = -1;
+        }
+
+        public SessionProcedure(int id)
+        {
+            Id = id;
+        }
+
         [Key]
         public int Id { get; set; }
 

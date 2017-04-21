@@ -13,6 +13,15 @@ namespace ClinicBusinessLogic
 
         public Doctor SelectedDoctor { get { return m_selectedDoctor; } }
         public event EventHandler DoctorsUpdated;
+
+        public DoctorsHandler()
+        {
+            using (var db = new ClinicModelContext())
+            {
+                m_Doctors = db.Doctors.ToList<Doctor>(); 
+            }
+        }
+
         public List<Doctor> Doctors
         {
             get
@@ -51,6 +60,23 @@ namespace ClinicBusinessLogic
 
             m_selectedDoctor = newDoctor;
             RaiseDoctorsUpdatedEvent();
+
+            using (var db = new ClinicModelContext())
+            {
+                if (id == -1)
+                {
+                    db.Doctors.Add(newDoctor);
+                }
+                else
+                {
+                    var existing = db.Doctors.Find(id);
+                    existing = newDoctor;
+                    db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
+
             return true;
         }
 

@@ -72,7 +72,6 @@ namespace ClinicBusinessLogic
             {
                 if (id == -1)
                 {
-                    m_Customers.Add(newCustomer);
                     db.Customers.Add(newCustomer);
                 }
                 else
