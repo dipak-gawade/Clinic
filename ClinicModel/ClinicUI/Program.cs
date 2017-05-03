@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Data.Entity;
 
 namespace ClinicUI
 {
@@ -13,6 +14,7 @@ namespace ClinicUI
         [STAThread]
         static void Main()
         {
+            Database.SetInitializer<ClinicModel.ClinicModelContext>(null);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

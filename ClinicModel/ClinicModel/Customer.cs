@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClinicModel
 {
@@ -42,6 +43,21 @@ namespace ClinicModel
         public Customer()
         {
             Id = 0;
+        }
+
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                string fullName = FirstName;
+                if(!string.IsNullOrEmpty(LastName))
+                {
+                    fullName = string.Format("{0} {1}", FirstName, LastName);
+                }
+
+                return fullName;
+            }
         }
     }
 

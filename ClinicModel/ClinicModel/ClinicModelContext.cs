@@ -16,8 +16,6 @@ namespace ClinicModel
 
         public DbSet<Procedure> Procedures { get; set; }
 
-        public DbSet<SessionProcedure> SessionProcedures { get; set; }
-
         public DbSet<Session> Sessions { get; set; }
     }
 }

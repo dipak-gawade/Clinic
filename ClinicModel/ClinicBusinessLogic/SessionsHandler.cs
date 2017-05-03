@@ -11,11 +11,12 @@ namespace ClinicBusinessLogic
         private List<Session> m_Sessions = new List<Session>();
         private CustomersHandler m_CustomersHandler = null;
         private ProceduresHandler m_ProceduresHandler = null;
-        private SessionProcedureHandler m_procedureResultHandler = null;
         private DoctorsHandler m_doctorsHandler = null;
         private Session m_SelectedSession;
 
         public Session SelectedSession { get { return m_SelectedSession; } }
+
+        public event EventHandler SessionUpdated;
 
         public SessionsHandler(CustomersHandler customersHandler, ProceduresHandler proceduresHandler, 
             DoctorsHandler doctorsHandler)
@@ -31,14 +32,14 @@ namespace ClinicBusinessLogic
 
         public List<Session> Sessions { get { return m_Sessions; } }
 
-        public bool AddOrEditSession(int id, int customerId, string patientComplaint,
-            DateTime reportTime, int discountedFees, List<SessionProcedure> sessionProcedures, out string errorOrigin, out string errorMessage)
+        public bool AddOrEditSession(long id, string customerName, string patientComplaint,
+            DateTime reportTime, int discountedFees, string attendedBy, out string errorOrigin, out string errorMessage)
         {
             errorMessage = string.Empty;
             errorOrigin = string.Empty;
 
             Session newSession = GetSessionById(id);
-            if (id == -1)
+            if (newSession == null)
             {
                 if (Sessions.Count > 0)
                 {
@@ -52,15 +53,20 @@ namespace ClinicBusinessLogic
                 Sessions.Add(newSession);
             }
 
-            newSession.Patient = m_CustomersHandler.GetCustomersById(customerId);
+            // newSession.Patient = m_CustomersHandler.GetCustomersByFullName(customerName);
             newSession.PatientComplaint = patientComplaint;
             newSession.ReportTime = reportTime;
             newSession.DiscountedFees = discountedFees;
+            newSession.AttendedBy = attendedBy;
 
-            newSession.Procedures = sessionProcedures;
+            m_SelectedSession = newSession;
 
             using (var db = new ClinicModelContext())
             {
+                Customer connectedDatabaseCustomer = db.Customers.Find
+                    (m_CustomersHandler.GetCustomersByFullName(customerName).Id);
+                //db.Machines.Attach(connectedDatabaseMachine);
+                newSession.Patient = connectedDatabaseCustomer;
                 if (id == -1)
                 {
                     db.Sessions.Add(newSession);
@@ -78,6 +84,11 @@ namespace ClinicBusinessLogic
             return true;
         }
 
+        public List<string> GetProcedureNames()
+        {
+            return m_ProceduresHandler.GetProcedureNames();
+        }
+
         public void SelectSession(Session session)
         {
             m_SelectedSession = session;
@@ -86,14 +97,68 @@ namespace ClinicBusinessLogic
         public void RemoveSession()
         {
             m_Sessions.Remove(m_SelectedSession);
+            using (var db = new ClinicModelContext())
+            {
+                var existing = db.Sessions.Find(m_SelectedSession.Id);
+                existing = m_SelectedSession;
+                db.Entry(existing).State = System.Data.Entity.EntityState.Deleted;
+                db.SaveChanges();
+            }
         }
 
-        public void AddSessionProceduresToSession(List<SessionProcedure> sessionProcedures)
+        public void ClearProcedures()
         {
-            m_SelectedSession.Procedures = sessionProcedures;
+            m_SelectedSession.Procedures.Clear();
         }
 
-        private Session GetSessionById(int id)
+        public void AddOrEditSessionProceduresToSession(int rowIndex, string procedureName, out string errorOrigin, out string errorMessage)
+        {
+            errorOrigin = string.Empty;
+            errorMessage = string.Empty;
+
+            Procedure newSessionProcedure = new Procedure();
+            newSessionProcedure = m_ProceduresHandler.GetProcedureByName(procedureName);
+            if (rowIndex >= m_SelectedSession.Procedures.Count)
+            {
+                m_SelectedSession.Procedures.Add(newSessionProcedure);
+            }
+            else
+            {
+                m_SelectedSession.Procedures[rowIndex] = newSessionProcedure;
+            }
+
+            using (var db = new ClinicModelContext())
+            {
+                var existing = db.Sessions.Find(m_SelectedSession.Id);
+                db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        public void GetTreatmentChargeAndTime(string treatmentName, out int treatmentPrice, out int treatmentTime)
+        {
+            Procedure pro = m_ProceduresHandler.GetProcedureByName(treatmentName);
+            treatmentPrice = pro.PricePerSession;
+            treatmentTime = pro.TimePerSession;
+        }
+
+        public int GetTreatmentCharges(List<string> treatmentNames)
+        {
+            Session dummySession = new Session();
+            foreach(string str in treatmentNames)
+            {
+                dummySession.Procedures.Add(m_ProceduresHandler.GetProcedureByName(str));
+            }
+
+            return dummySession.ChargesIncured;
+        }
+
+        public List<string> GetAllCustomerNames()
+        {
+            return m_CustomersHandler.GetAllCustomerNames();
+        }
+
+        private Session GetSessionById(long id)
         {
             return Sessions.Find(x => x.Id == id);
         }

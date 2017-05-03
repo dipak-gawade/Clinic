@@ -53,6 +53,7 @@
             this.tabSessions = new System.Windows.Forms.TabPage();
             this.btnSession = new System.Windows.Forms.Button();
             this.gbSessionSearch = new System.Windows.Forms.GroupBox();
+            this.dateTimePickerByDate = new System.Windows.Forms.DateTimePicker();
             this.rbListAllSessions = new System.Windows.Forms.RadioButton();
             this.btnSearchSession = new System.Windows.Forms.Button();
             this.txtSessionId = new System.Windows.Forms.TextBox();
@@ -61,7 +62,6 @@
             this.rbSessionId = new System.Windows.Forms.RadioButton();
             this.rbFirstNameSession = new System.Windows.Forms.RadioButton();
             this.dataGridViewSessions = new System.Windows.Forms.DataGridView();
-            this.dateTimePickerByDate = new System.Windows.Forms.DateTimePicker();
             this.tabControlWHole.SuspendLayout();
             this.tabCustomers.SuspendLayout();
             this.gbSearch.SuspendLayout();
@@ -328,6 +328,7 @@
             this.btnSession.TabIndex = 6;
             this.btnSession.Text = "Add Session";
             this.btnSession.UseVisualStyleBackColor = true;
+            this.btnSession.Click += new System.EventHandler(this.btnSession_Click);
             // 
             // gbSessionSearch
             // 
@@ -345,6 +346,14 @@
             this.gbSessionSearch.TabIndex = 5;
             this.gbSessionSearch.TabStop = false;
             this.gbSessionSearch.Text = "Search";
+            // 
+            // dateTimePickerByDate
+            // 
+            this.dateTimePickerByDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePickerByDate.Location = new System.Drawing.Point(458, 39);
+            this.dateTimePickerByDate.Name = "dateTimePickerByDate";
+            this.dateTimePickerByDate.Size = new System.Drawing.Size(115, 20);
+            this.dateTimePickerByDate.TabIndex = 8;
             // 
             // rbListAllSessions
             // 
@@ -421,14 +430,6 @@
             this.dataGridViewSessions.Name = "dataGridViewSessions";
             this.dataGridViewSessions.Size = new System.Drawing.Size(675, 221);
             this.dataGridViewSessions.TabIndex = 4;
-            // 
-            // dateTimePickerByDate
-            // 
-            this.dateTimePickerByDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerByDate.Location = new System.Drawing.Point(458, 39);
-            this.dateTimePickerByDate.Name = "dateTimePickerByDate";
-            this.dateTimePickerByDate.Size = new System.Drawing.Size(115, 20);
-            this.dateTimePickerByDate.TabIndex = 8;
             // 
             // MainForm
             // 

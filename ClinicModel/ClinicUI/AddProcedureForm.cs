@@ -49,8 +49,7 @@ namespace ClinicUI
             string errorOrigin = string.Empty;
             string errorMessage = string.Empty;
 
-            m_ProceduresHandler.AddOrEditProcedure(m_operation == Operation.Add ? -1 : m_ProceduresHandler.SelectedProcedure.Id,
-                txtProcedureName.Text,
+            m_ProceduresHandler.AddOrEditProcedure(txtProcedureName.Text,
                 cbMachine.Text,
                 Convert.ToInt32(txtPricePerSession.Text),
                 Convert.ToInt32(txtTimePerSession.Text),

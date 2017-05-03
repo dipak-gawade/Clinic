@@ -52,7 +52,6 @@
     <Compile Include="CustomerHandler.cs" />
     <Compile Include="DoctorsHandler.cs" />
     <Compile Include="MachinesHandler.cs" />
-    <Compile Include="SessionProcedureHandler.cs" />
     <Compile Include="ProceduresHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionsHandler.cs" />

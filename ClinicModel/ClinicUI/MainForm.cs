@@ -819,6 +819,12 @@ namespace ClinicUI
 
         #endregion
 
+        private void btnSession_Click(object sender, EventArgs e)
+        {
+            AddSessionForm addForm = new AddSessionForm( m_SessionsHandler, Operation.Add);
+            addForm.ShowDialog(this);
+        }
+
         #endregion
     }
 }

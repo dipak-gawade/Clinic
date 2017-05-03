@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClinicModel
 {
@@ -14,11 +15,11 @@ namespace ClinicModel
         public Session(int id)
         {
             Id = id;
+            Procedures = new List<Procedure>();
         }
 
-        public Session()
+        public Session():this(0)
         {
-            Id = 0;
         }
 
         [Key]
@@ -28,7 +29,7 @@ namespace ClinicModel
 
         public string PatientComplaint { get; set; }
 
-        public List<SessionProcedure> Procedures { get; set; }
+        public virtual List<Procedure> Procedures { get; set; }
 
         public DateTime ReportTime { get; set; }
 
@@ -37,17 +38,44 @@ namespace ClinicModel
             get
             {
                 int charges = 0;
-                foreach (SessionProcedure pr in Procedures)
+                foreach (Procedure pr in Procedures)
                 {
-                    charges += pr.Procedure.PricePerSession;
+                    charges += pr.PricePerSession;
                 }
 
                 return charges;
             }
         }
 
+        public int TotalTime
+        {
+            get
+            {
+                int time = 0;
+                foreach (Procedure pr in Procedures)
+                {
+                    time += pr.TimePerSession;
+                }
+
+                return time;
+            }
+        }
+
         public int DiscountedFees { get; set; }
 
         public string AttendedBy { get; set; }
+
+        //public SessionProcedureResult Result { get; set; }
+
+        //public string AdditionalComments { get; set; }
+    }
+
+    public enum SessionProcedureResult
+    {
+        Successful,
+        Pending,
+        CustomerFailedToVisit,
+        MachineBroken,
+        Cancelled
     }
 }

@@ -92,6 +92,14 @@ namespace ClinicBusinessLogic
         public void RemoveCustomer()
         {
             m_Customers.Remove(m_SelectedCustomer);
+            using (var db = new ClinicModelContext())
+            {
+                var existing = db.Customers.Find(m_SelectedCustomer.Id);
+                existing = m_SelectedCustomer;
+                db.Entry(existing).State = System.Data.Entity.EntityState.Deleted;
+                db.SaveChanges();
+            }
+
             RaiseCustomersUpdatedEvent();
         }
 
@@ -113,6 +121,23 @@ namespace ClinicBusinessLogic
         public Customer GetCustomersById(int id)
         {
             return m_Customers.Find(x => x.Id == id);
+        }
+
+        public List<string> GetAllCustomerNames()
+        {
+            return m_Customers.Select(x => string.Format("{0} {1}", x.FirstName, x.LastName)).ToList();
+        }
+
+        internal Customer GetCustomersByFullName(string customerName)
+        {
+            string[] names = customerName.Split(' ');
+            List<Customer> lst = m_Customers.FindAll(x => x.FirstName.Equals(names[0]));
+            if(!string.IsNullOrEmpty(names[1]))
+            {
+                return lst.Find(x => x.LastName.Equals(names[1]));
+            }
+
+            return lst[0];
         }
 
         #endregion

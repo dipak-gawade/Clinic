@@ -58,7 +58,6 @@
     <Compile Include="Procedure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
-    <Compile Include="SessionProcedure.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

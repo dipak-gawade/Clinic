@@ -34,51 +34,52 @@ namespace ClinicBusinessLogic
             m_SelectedProcedure = procedure;
         }
 
-        public bool AddOrEditProcedure(int id, string name, string machineName, int pricePerSession, int timePerSession,
+        public bool AddOrEditProcedure(string name, string machineName, int pricePerSession, int timePerSession,
             out string errorOrigin, out string errorMessage)
         {
             errorOrigin = string.Empty;
             errorMessage = string.Empty;
 
-            Procedure newProcedure = GetProcedureFromId(id);
+            Procedure newProcedure = m_Procedures.Find(x => x.Name.Equals(name));
+            bool isNewEntry = false;
 
-            if (id == -1)
+            if (newProcedure == null)
             {
-                if (m_Procedures.Count > 0)
-                {
-                    newProcedure = new Procedure(m_Procedures[m_Procedures.Count - 1].Id + 1);
-                }
-                else
-                {
-                    newProcedure = new Procedure(1);
-                }
-
+                isNewEntry = true;
+                newProcedure = new Procedure();
                 m_Procedures.Add(newProcedure);
             }
 
-            newProcedure.Machine = m_MachinesHandler.GetMachineByName(machineName);
+            //newProcedure.Machine = m_MachinesHandler.GetMachineByName(machineName);
             newProcedure.Name = name;
             newProcedure.PricePerSession = pricePerSession;
             newProcedure.TimePerSession = timePerSession;
 
             m_SelectedProcedure = newProcedure;
-            RaiseProceduresUpdatedEvent();
+            
 
             using (var db = new ClinicModelContext())
             {
-                if (id == -1)
+                string serNumber = m_MachinesHandler.GetMachineByName(machineName).SerialNumber;
+                Machine connectedDatabaseMachine = db.Machines.Single(x => x.SerialNumber.Equals(serNumber));
+                //db.Machines.Attach(connectedDatabaseMachine);
+                newProcedure.Machine = connectedDatabaseMachine;
+
+                if (isNewEntry)
                 {
                     db.Procedures.Add(newProcedure);
                 }
                 else
                 {
-                    var existing = db.Procedures.Find(id);
+                    var existing = db.Procedures.Single(x => x.Name.Equals(name));
                     existing = newProcedure;
                     db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
                 }
 
                 db.SaveChanges();
             }
+
+            RaiseProceduresUpdatedEvent();
 
             return true;
         }
@@ -91,6 +92,13 @@ namespace ClinicBusinessLogic
         public void RemoveProcedure()
         {
             m_Procedures.Remove(m_SelectedProcedure);
+            using (var db = new ClinicModelContext())
+            {
+                var existing = db.Procedures.Single(x => x.Name.Equals(m_SelectedProcedure.Name));
+                existing = m_SelectedProcedure;
+                db.Entry(existing).State = System.Data.Entity.EntityState.Deleted;
+                db.SaveChanges();
+            }
             RaiseProceduresUpdatedEvent();
         }
 
@@ -99,17 +107,17 @@ namespace ClinicBusinessLogic
             return m_Procedures.Find(x => x.Name == procedureName);
         }
 
+        public List<string> GetProcedureNames()
+        {
+            return m_Procedures.Select(x => x.Name).ToList();
+        }
+
         private void RaiseProceduresUpdatedEvent()
         {
             if (ProceduresUpdated != null)
             {
                 ProceduresUpdated(this, null);
             }
-        }
-
-        private Procedure GetProcedureFromId(int id)
-        {
-            return m_Procedures.Find(x => x.Id == id);
         }
     }
 }
