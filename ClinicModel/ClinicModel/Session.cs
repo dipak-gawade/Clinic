@@ -12,6 +12,7 @@ namespace ClinicModel
     /// </summary>
     public class Session
     {
+        private List<Procedure> m_procedures;
         public Session(int id)
         {
             Id = id;
@@ -29,7 +30,11 @@ namespace ClinicModel
 
         public string PatientComplaint { get; set; }
 
-        public virtual List<Procedure> Procedures { get; set; }
+        public virtual List<Procedure> Procedures
+        {
+            get { return m_procedures; }
+            set { m_procedures = value; }
+        }
 
         public DateTime ReportTime { get; set; }
 
@@ -38,7 +43,7 @@ namespace ClinicModel
             get
             {
                 int charges = 0;
-                foreach (Procedure pr in Procedures)
+                foreach (Procedure pr in m_procedures)
                 {
                     charges += pr.PricePerSession;
                 }
@@ -52,7 +57,7 @@ namespace ClinicModel
             get
             {
                 int time = 0;
-                foreach (Procedure pr in Procedures)
+                foreach (Procedure pr in m_procedures)
                 {
                     time += pr.TimePerSession;
                 }
@@ -64,6 +69,48 @@ namespace ClinicModel
         public int DiscountedFees { get; set; }
 
         public string AttendedBy { get; set; }
+
+        [NotMapped]
+        public string AllProcedureNames
+        {
+            get
+            {
+                StringBuilder allProcedureNames = new StringBuilder();
+
+                foreach(Procedure proc in m_procedures)
+                {
+                    if(allProcedureNames.Length > 0)
+                    {
+                        allProcedureNames.Append(",");
+                    }
+
+                    allProcedureNames.Append(proc.Name);
+                }
+
+                return allProcedureNames.ToString();
+            }
+        }
+
+        [NotMapped]
+        public string FullName
+        {
+            get { return Patient != null ? Patient.FullName : string.Empty; }
+        }
+
+        public void ClearProcedures()
+        {
+            m_procedures.Clear();
+        }
+
+        public int GetProcedureCount()
+        {
+            return m_procedures.Count;
+        }
+
+        public void AddProcedure(Procedure newProcedure)
+        {
+            m_procedures.Add(newProcedure);
+        }
 
         //public SessionProcedureResult Result { get; set; }
 

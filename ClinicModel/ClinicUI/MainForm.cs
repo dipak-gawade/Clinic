@@ -38,10 +38,13 @@ namespace ClinicUI
             SetCustomersGridDisplayColumns();
             SetProceduresGridDisplayColumns();
             SetDoctorsGridDisplayColumns();
+            SetSessionsGridDisplayColumns();
 
             UpdateMachineDataSource();
             UpdateCustomerDataSource();
             UpdateProcedureDataSource();
+            UpdateDoctorDataSource();
+            UpdateSessionDataSource();
 
             dataGridViewProcedures.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridViewProcedures_CellFormatting);
         }
@@ -213,7 +216,7 @@ namespace ClinicUI
 
             dataGridViewSessions.SelectionChanged += new EventHandler(dataGridViewSessions_SelectionChanged);
             dataGridViewSessions.CellMouseDown += new DataGridViewCellMouseEventHandler(dataGridViewSessions_CellMouseDown);
-            //m_SessionsHandler.Ses += new EventHandler(m_SessionsHandler_SessionssUpdated);
+            m_SessionsHandler.SessionUpdated += new EventHandler(m_SessionsHandler_SessionssUpdated);
         }
 
         private void SetMachinesGridDisplayColumns()
@@ -338,28 +341,33 @@ namespace ClinicUI
 
         private void SetSessionsGridDisplayColumns()
         {
-            dataGridViewDoctors.ColumnCount = 4;
+            dataGridViewSessions.ColumnCount = 5;
 
-            dataGridViewDoctors.Columns[0].Name = "Id";
-            dataGridViewDoctors.Columns[0].HeaderText = "Id";
-            dataGridViewDoctors.Columns[0].DataPropertyName = "Id";
-            dataGridViewDoctors.Columns[0].ReadOnly = true;
+            dataGridViewSessions.Columns[0].Name = "Id";
+            dataGridViewSessions.Columns[0].HeaderText = "Id";
+            dataGridViewSessions.Columns[0].DataPropertyName = "Id";
+            dataGridViewSessions.Columns[0].ReadOnly = true;
 
-            dataGridViewDoctors.Columns[1].Name = "Name";
-            dataGridViewDoctors.Columns[1].HeaderText = "Customer name";
-            dataGridViewDoctors.Columns[1].DataPropertyName = "Name";
-            dataGridViewDoctors.Columns[1].ReadOnly = true;
+            dataGridViewSessions.Columns[1].Name = "PatientName";
+            dataGridViewSessions.Columns[1].HeaderText = "Patient";
+            dataGridViewSessions.Columns[1].DataPropertyName = "FullName";
+            dataGridViewSessions.Columns[1].ReadOnly = true;
 
-            dataGridViewDoctors.Columns[2].Name = "PatientComplaint";
-            dataGridViewDoctors.Columns[2].HeaderText = "Complaint";
-            dataGridViewDoctors.Columns[2].DataPropertyName = "PatientComplaint";
-            dataGridViewDoctors.Columns[2].ReadOnly = true;
-            dataGridViewDoctors.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewSessions.Columns[2].Name = "Treatments";
+            dataGridViewSessions.Columns[2].HeaderText = "Treatment";
+            dataGridViewSessions.Columns[2].DataPropertyName = "AllProcedureNames";
+            dataGridViewSessions.Columns[2].ReadOnly = true;
+            dataGridViewSessions.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dataGridViewDoctors.Columns[3].Name = "ReportTime";
-            dataGridViewDoctors.Columns[3].HeaderText = "Report time";
-            dataGridViewDoctors.Columns[3].DataPropertyName = "ReportTime";
-            dataGridViewDoctors.Columns[3].ReadOnly = true;
+            dataGridViewSessions.Columns[3].Name = "ReportTime";
+            dataGridViewSessions.Columns[3].HeaderText = "Report time";
+            dataGridViewSessions.Columns[3].DataPropertyName = "ReportTime";
+            dataGridViewSessions.Columns[3].ReadOnly = true;
+
+            dataGridViewSessions.Columns[4].Name = "DiscountedFees";
+            dataGridViewSessions.Columns[4].HeaderText = "Fees";
+            dataGridViewSessions.Columns[4].DataPropertyName = "DiscountedFees";
+            dataGridViewSessions.Columns[4].ReadOnly = true;
         }
 
         private void UpdateMachineDataSource()
@@ -815,6 +823,11 @@ namespace ClinicUI
         private void btnSearchSession_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void m_SessionsHandler_SessionssUpdated(object sender, EventArgs e)
+        {
+            UpdateSessionDataSource();
         }
 
         #endregion

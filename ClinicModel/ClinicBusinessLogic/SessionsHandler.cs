@@ -26,7 +26,7 @@ namespace ClinicBusinessLogic
             m_doctorsHandler = doctorsHandler;
             using (var db = new ClinicModelContext())
             {
-                m_Sessions = db.Sessions.ToList<Session>(); 
+                m_Sessions = db.Sessions.ToList(); 
             }
         }
 
@@ -81,7 +81,17 @@ namespace ClinicBusinessLogic
                 db.SaveChanges();
             }
 
+            RaiseSessionUpdatedEvent();
+
             return true;
+        }
+
+        private void RaiseSessionUpdatedEvent()
+        {
+            if(SessionUpdated != null)
+            {
+                SessionUpdated(this, null);
+            }
         }
 
         public List<string> GetProcedureNames()
@@ -100,15 +110,16 @@ namespace ClinicBusinessLogic
             using (var db = new ClinicModelContext())
             {
                 var existing = db.Sessions.Find(m_SelectedSession.Id);
-                existing = m_SelectedSession;
                 db.Entry(existing).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
             }
+
+            RaiseSessionUpdatedEvent();
         }
 
         public void ClearProcedures()
         {
-            m_SelectedSession.Procedures.Clear();
+            m_SelectedSession.ClearProcedures();
         }
 
         public void AddOrEditSessionProceduresToSession(int rowIndex, string procedureName, out string errorOrigin, out string errorMessage)
@@ -118,17 +129,18 @@ namespace ClinicBusinessLogic
 
             Procedure newSessionProcedure = new Procedure();
             newSessionProcedure = m_ProceduresHandler.GetProcedureByName(procedureName);
-            if (rowIndex >= m_SelectedSession.Procedures.Count)
+            using (var db = new ClinicModelContext())
             {
-                m_SelectedSession.Procedures.Add(newSessionProcedure);
+            if (rowIndex >= m_SelectedSession.GetProcedureCount())
+            {
+                m_SelectedSession.AddProcedure(newSessionProcedure);
             }
             else
             {
                 m_SelectedSession.Procedures[rowIndex] = newSessionProcedure;
             }
 
-            using (var db = new ClinicModelContext())
-            {
+            
                 var existing = db.Sessions.Find(m_SelectedSession.Id);
                 db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

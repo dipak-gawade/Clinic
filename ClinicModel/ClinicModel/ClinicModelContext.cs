@@ -8,6 +8,8 @@ namespace ClinicModel
 {
     public class ClinicModelContext:DbContext
     {
+
+
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Doctor> Doctors { get; set; }

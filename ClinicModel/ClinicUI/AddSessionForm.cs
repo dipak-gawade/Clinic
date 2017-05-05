@@ -51,7 +51,7 @@ namespace ClinicUI
             dgvTreatments.SelectionChanged += new EventHandler(dgvTreatments_SelectionChanged);
             dgvTreatments.UserDeletedRow += dgvTreatments_UserDeletedRow;
 
-            SetCustomersGridDisplayColumns();
+            SetProceduresGridDisplayColumns();
             UpdateTreatmentDataSource();
 
             dgvTreatments.CurrentCellDirtyStateChanged += dgvTreatments_CurrentCellDirtyStateChanged;
@@ -116,7 +116,7 @@ namespace ClinicUI
 
         private void UpdateTreatmentDataSource()
         {
-            if (m_sessionsHandler.SelectedSession != null)
+            if (m_operation != Operation.Add)
             {
                 BindingSource bs = new BindingSource();
                 bs.DataSource = m_sessionsHandler.SelectedSession.Procedures;
@@ -125,7 +125,7 @@ namespace ClinicUI
             }
         }
 
-        private void SetCustomersGridDisplayColumns()
+        private void SetProceduresGridDisplayColumns()
         {
             DataGridViewComboBoxColumn cb = new DataGridViewComboBoxColumn();
             cb.DataSource = m_sessionsHandler.GetProcedureNames();
@@ -163,10 +163,16 @@ namespace ClinicUI
             int rowIndex = 0;
             foreach(DataGridViewRow row in dgvTreatments.Rows)
             {
-                m_sessionsHandler.AddOrEditSessionProceduresToSession(rowIndex, Convert.ToString(row.Cells[0].Value),
-                    out errorOrigin, out errorMessage);
-                rowIndex++;
+                if (!row.IsNewRow)
+                {
+                    m_sessionsHandler.AddOrEditSessionProceduresToSession(rowIndex, Convert.ToString(row.Cells[0].Value),
+                        out errorOrigin, out errorMessage);
+                    rowIndex++;
+                }
             }
+
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
